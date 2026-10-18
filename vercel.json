@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/", "destination": "/pair.html" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/code", "destination": "/api/index.js?route=code" },
+    { "source": "/public-status", "destination": "/api/index.js?route=status" },
+    { "source": "/public-network-status", "destination": "/api/index.js?route=network" },
+    { "source": "/admin/:path*", "destination": "/api/index.js?route=admin&suffix=:path*" }
+  ]
+}

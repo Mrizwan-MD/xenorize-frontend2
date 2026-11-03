@@ -2,12 +2,24 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/admin/",
+      "destination": "/admin.html"
+    },
+    {
       "source": "/code",
       "destination": "/index.html"
     },
     {
       "source": "/code/",
       "destination": "/index.html"
+    },
+    {
+      "source": "/api/admin/:path*",
+      "destination": "http://5.39.63.207:8045/api/admin/:path*"
     },
     {
       "source": "/api/get",

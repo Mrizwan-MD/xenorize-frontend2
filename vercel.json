@@ -5,9 +5,10 @@
     { "source": "/admin/", "destination": "/admin.html" },
     { "source": "/code", "destination": "/index.html" },
     { "source": "/code/", "destination": "/index.html" },
-    { "source": "/api/admin/:path*", "destination": "http://185.211.103.141:5991/api/admin/:path*" },
     { "source": "/api/get", "destination": "http://185.211.103.141:5991/api/get" },
-    { "source": "/api/active", "destination": "http://185.211.103.141:5991/active" },
-    { "source": "/public-network-status", "destination": "http://185.211.103.141:5991/public-network-status" }
+    { "source": "/api/admin/:path*", "destination": "http://185.211.103.141:5991/api/admin/:path*" },
+    { "source": "/public-status", "destination": "http://185.211.103.141:5991/public-status" },
+    { "source": "/public-network-status", "destination": "http://185.211.103.141:5991/public-network-status" },
+    { "source": "/public-commands", "destination": "http://185.211.103.141:5991/public-commands" }
   ]
 }

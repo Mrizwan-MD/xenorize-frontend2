@@ -1,14 +1,61 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/admin/", "destination": "/admin.html" },
-    { "source": "/code", "destination": "/index.html" },
-    { "source": "/code/", "destination": "/index.html" },
-    { "source": "/api/get", "destination": "http://160.191.77.60:5145/api/get" },
-    { "source": "/api/admin/:path*", "destination": "http://160.191.77.60:5145/api/admin/:path*" },
-    { "source": "/public-status", "destination": "http://160.191.77.60:5145/public-status" },
-    { "source": "/public-network-status", "destination": "http://160.191.77.60:5145/public-network-status" },
-    { "source": "/public-commands", "destination": "http://160.191.77.60:5145/public-commands" }
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/admin/",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/code",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/code/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/api/get",
+      "destination": "http://145.239.65.119:20252/api/get"
+    },
+    {
+      "source": "/api/admin/:path*",
+      "destination": "http://145.239.65.119:20252/api/admin/:path*"
+    },
+    {
+      "source": "/public-status",
+      "destination": "http://160.191.77.60:5145/public-status"
+    },
+    {
+      "source": "/public-network-status",
+      "destination": "http://145.239.65.119:20252/public-network-status"
+    },
+    {
+      "source": "/public-commands",
+      "destination": "http://145.239.65.119:20252/public-commands"
+    },
+    {
+      "source": "/s2/api/get",
+      "destination": "http://145.239.65.118:20001/api/get"
+    },
+    {
+      "source": "/s2/api/admin/:path*",
+      "destination": "http://145.239.65.118:20001/api/admin/:path*"
+    },
+    {
+      "source": "/s2/public-status",
+      "destination": "http://145.239.65.118:20001/public-status"
+    },
+    {
+      "source": "/s2/public-network-status",
+      "destination": "http://145.239.65.118:20001/public-network-status"
+    },
+    {
+      "source": "/s2/public-commands",
+      "destination": "http://145.239.65.118:20001/public-commands"
+    }
   ]
 }

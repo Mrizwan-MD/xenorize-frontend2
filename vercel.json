@@ -5,10 +5,10 @@
     { "source": "/admin/", "destination": "/admin.html" },
     { "source": "/code", "destination": "/index.html" },
     { "source": "/code/", "destination": "/index.html" },
-    { "source": "/api/get", "destination": "http://5.39.63.207:9267/api/get" },
-    { "source": "/api/admin/:path*", "destination": "http://5.39.63.207:9267/api/admin/:path*" },
-    { "source": "/public-status", "destination": "http://5.39.63.207:9267/public-status" },
-    { "source": "/public-network-status", "destination": "http://5.39.63.207:9267/public-network-status" },
-    { "source": "/public-commands", "destination": "http://5.39.63.207:9267/public-commands" }
+    { "source": "/api/get", "destination": "http://160.191.77.60:5145/api/get" },
+    { "source": "/api/admin/:path*", "destination": "http://160.191.77.60:5145/api/admin/:path*" },
+    { "source": "/public-status", "destination": "http://160.191.77.60:5145/public-status" },
+    { "source": "/public-network-status", "destination": "http://160.191.77.60:5145/public-network-status" },
+    { "source": "/public-commands", "destination": "http://160.191.77.60:5145/public-commands" }
   ]
 }

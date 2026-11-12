@@ -21,6 +21,10 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:8px 6px;b
 .gi span.n{flex:1;word-break:break-word}.bar{height:8px;border-radius:9px;background:#2a1418;overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#a80d29,#79efb4);transition:width .3s}
 textarea.input{min-height:78px;resize:vertical}.btn.green{background:linear-gradient(100deg,#0b7a4b,#25d366)}.small{font-size:12px;padding:7px 10px}
 .scroll{overflow-x:auto}.hide{display:none}.login{max-width:400px;margin:14vh auto}
+.chatbox{height:360px;overflow:auto;border:1px solid var(--line);border-radius:12px;background:#0b0506;padding:10px;margin-top:10px}
+.bubble{max-width:86%;margin:7px 0;padding:8px 10px;border-radius:12px;background:#241116;border:1px solid #ffffff10;white-space:pre-wrap;word-break:break-word}
+.bubble.me{margin-left:auto;background:#103b2c;border-color:#79efb433}.bubble .meta{display:block;color:var(--muted);font-size:10px;margin-bottom:3px}
+.chatrow{display:block;padding:10px;border-bottom:1px solid #ffffff0d;cursor:pointer}.chatrow:hover,.chatrow.active{background:#ffffff0b}.chatrow b{display:block}.chatrow small{display:block;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 </style></head><body><div class="wrap">
 
 <div id="login" class="card login"><div class="brand"><div class="logo">X</div><div><h1>XENORIZE Admin</h1><div class="muted">Enter the ADMIN_KEY of your bot panel</div></div></div>
@@ -48,6 +52,17 @@ textarea.input{min-height:78px;resize:vertical}.btn.green{background:linear-grad
 <div class="bar hide" id="gBarW"><i id="gBar"></i></div>
 <div class="row hide" id="gStopW" style="margin-top:8px"><button id="gStop" class="btn ghost small">Stop</button></div>
 <div id="gMsg" class="notice" style="white-space:pre-wrap"></div></div>
+
+<div class="card"><h2>CHAT EXPLORER</h2>
+ <div class="muted">Select a connected session, then Inbox or Groups. Open any chat to view its recent cached messages and send a text message.</div>
+ <div class="row" style="margin-top:10px"><select id="cSession"><option value="">Select session...</option></select><button id="cRefresh" class="btn ghost small">Refresh list</button></div>
+ <div class="row" style="margin-top:10px"><button id="cInbox" class="btn ghost">Inbox</button><button id="cGroups" class="btn ghost">Groups</button></div>
+ <div class="row" style="margin-top:10px"><input id="cNewNumber" class="input" placeholder="New chat number with country code" inputmode="numeric"><button id="cNew" class="btn">New Chat</button></div>
+ <div id="cList" class="gl"><div class="gi muted">Select a session and category.</div></div>
+ <div id="cMessages" class="chatbox"><div class="muted">Open a chat from the list.</div></div>
+ <div class="row" style="margin-top:10px"><textarea id="cText" class="input" placeholder="Write a message..."></textarea><button id="cSend" class="btn green">Send message</button></div>
+ <div id="cMsg" class="notice" style="white-space:pre-wrap"></div>
+</div>
 
 <div class="card"><h2>PREMIUM</h2><div class="row"><input id="pNum" class="input" placeholder="923001234567" inputmode="numeric"><input id="pDays" class="input" placeholder="Days (empty = forever)" inputmode="numeric"></div>
 <div class="row" style="margin-top:10px"><button id="pAdd" class="btn">Give premium</button><button id="pDel" class="btn ghost">Remove premium</button></div><div id="pMsg" class="notice"></div></div>
@@ -77,9 +92,10 @@ $('#rGo').onclick=async()=>{const n=digits($('#rNum').value);if(n.length<7)retur
 /* ===== SWGC / SWGCALL ===== */
 let online=[],groupsBy={},sel={},jobTimer=null,curJob=null;
 const API=(p,o={})=>fetch(p,{...o,headers:{'x-admin-key':key,Accept:'application/json',...(o.headers||{})}}).then(async r=>{const d=await r.json().catch(()=>({error:'Invalid response'}));if(!r.ok)throw Error(d.error||'Request failed');return d});
+let chatTimer=null;
 function fillScope(users){online=users.filter(u=>u.connected).map(u=>u.number);const cur=$('#gScope').value;
  $('#gScope').innerHTML=`<option value="all">All sessions (${online.length} online)</option>`+online.map(n=>`<option value="${esc(n)}">+${esc(n)}</option>`).join('');
- if(cur&&[...$('#gScope').options].some(o=>o.value===cur))$('#gScope').value=cur}
+ if(cur&&[...$('#gScope').options].some(o=>o.value===cur))$('#gScope').value=cur;fillChatSessions()}
 const scopeNums=()=>$('#gScope').value==='all'?online.slice():[$('#gScope').value];
 $('#gFile').onchange=()=>{const f=$('#gFile').files[0];$('#gFileInfo').textContent=f?`${f.name} · ${(f.size/1048576).toFixed(1)} MB`+(f.size>64*1048576?' (too big, max 64 MB)':''):''};
 function selCount(){return Object.values(sel).reduce((a,s)=>a+s.size,0)}
@@ -92,6 +108,18 @@ function renderGroups(){const q=$('#gSearch').value.trim().toLowerCase();let h='
  $('#gPost').textContent=`Post on selected groups (${selCount()})`;
  $('#gList').querySelectorAll('[data-j]').forEach(c=>c.onchange=()=>{c.checked?sel[c.dataset.n].add(c.dataset.j):sel[c.dataset.n].delete(c.dataset.j);renderGroups()});
  $('#gList').querySelectorAll('[data-sn]').forEach(c=>c.onchange=()=>{const n=c.dataset.sn;groupsBy[n].filter(g=>!q||g.subject.toLowerCase().includes(q)).forEach(g=>c.checked?sel[n].add(g.id):sel[n].delete(g.id));renderGroups()})}
+let chatKind='',chatTargetJid='',chatSession='',chatList=[];
+function fillChatSessions(){const cur=$('#cSession').value;$('#cSession').innerHTML='<option value="">Select session...</option>'+online.map(n=>`<option value="${esc(n)}">+${esc(n)}</option>`).join('');if(cur&&online.includes(cur))$('#cSession').value=cur}
+async function loadChatList(kind){chatKind=kind;chatSession=$('#cSession').value;if(!chatSession)return msg('#cMsg','Select a connected session first',true);$('#cList').innerHTML='<div class="gi muted">Loading chats...</div>';try{const d=await API(`/api/admin/chat/list?number=${encodeURIComponent(chatSession)}&kind=${kind}`);chatList=d.chats||[];$('#cList').innerHTML=chatList.length?chatList.map((c,i)=>`<div class="chatrow" data-ci="${i}"><b>${esc(c.title)}</b><small>${esc(c.lastText)} · ${c.count} cached</small></div>`).join(''):'<div class="gi muted">No cached chats in this category.</div>';$('#cList').querySelectorAll('[data-ci]').forEach(e=>e.onclick=()=>openChat(chatList[Number(e.dataset.ci)],e));msg('#cMsg',`${chatList.length} ${kind==='groups'?'group':'inbox'} chats found.`)}catch(e){msg('#cMsg',e.message,true);$('#cList').innerHTML='<div class="gi muted">Could not load chats.</div>'}}
+function openChat(c,el){chatTargetJid=c.jid;document.querySelectorAll('.chatrow').forEach(x=>x.classList.remove('active'));el?.classList.add('active');loadChats()}
+function chatTarget(){return chatSession&&chatTargetJid?{number:chatSession,jid:chatTargetJid}:null}
+function renderChats(messages){const box=$('#cMessages');box.innerHTML=messages.length?messages.map(m=>`<div class="bubble ${m.fromMe?'me':''}"><span class="meta">${m.fromMe?'Bot':esc(m.name||m.sender||'Member')} · ${m.timestamp?new Date(m.timestamp*1000).toLocaleString():''}</span>${esc(m.text)}</div>`).join(''):'<div class="muted">No cached messages for this group.</div>';box.scrollTop=box.scrollHeight}
+async function loadChats(){const t=chatTarget();if(!t){renderChats([]);return}try{const d=await API(`/api/admin/chat/history?number=${encodeURIComponent(t.number)}&jid=${encodeURIComponent(t.jid)}&limit=100`);renderChats(d.messages||[]);msg('#cMsg',`Showing ${d.messages.length} recent cached messages.`)}catch(e){msg('#cMsg',e.message,true)}}
+$('#cSession').onchange=()=>{chatSession=$('#cSession').value;chatTargetJid='';$('#cList').innerHTML='<div class="gi muted">Choose Inbox or Groups.</div>';renderChats([])};
+$('#cInbox').onclick=()=>loadChatList('inbox');$('#cGroups').onclick=()=>loadChatList('groups');
+$('#cNew').onclick=()=>{const n=digits($('#cNewNumber').value);chatSession=$('#cSession').value;if(!chatSession)return msg('#cMsg','Select a connected session first',true);if(n.length<7||n.length>15)return msg('#cMsg','Enter a valid number with country code',true);chatKind='new';chatTargetJid=n+'@s.whatsapp.net';$('#cList').innerHTML=`<div class="chatrow active"><b>+${esc(n)}</b><small>New inbox chat</small></div>`;renderChats([]);msg('#cMsg',`New chat ready: +${n}. Write a message below.`)};
+$('#cRefresh').onclick=()=>chatKind?loadChatList(chatKind):msg('#cMsg','Choose Inbox or Groups first',true);
+$('#cSend').onclick=async()=>{const t=chatTarget(),text=$('#cText').value.trim();if(!t)return msg('#cMsg','Open a chat first',true);if(!text)return msg('#cMsg','Write a message first',true);$('#cSend').disabled=true;try{const d=await API('/api/admin/chat/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({number:t.number,jid:t.jid,text})});$('#cText').value='';msg('#cMsg',d.message);setTimeout(loadChats,500)}catch(e){msg('#cMsg',e.message,true)}finally{$('#cSend').disabled=false}};
 $('#gSearch').oninput=renderGroups;
 $('#gSelAll').onclick=()=>{const q=$('#gSearch').value.trim().toLowerCase();for(const n in groupsBy)groupsBy[n].filter(g=>!q||g.subject.toLowerCase().includes(q)).forEach(g=>sel[n].add(g.id));renderGroups()};
 $('#gSelNone').onclick=()=>{for(const n in sel)sel[n].clear();renderGroups()};

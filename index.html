@@ -40,23 +40,26 @@ async function requestCode(){
   try{
     const q=new URLSearchParams({number:n});
     const ref=rcode(refnum.value);if(ref&&ref!==n)q.set('ref',ref);
-    // Browser talks ONLY to this Vercel site (HTTPS); Vercel forwards to the bot over HTTP via /slot/<id>/ rewrites.
-    const slotBase=(s)=>'/slot/'+Number(s.id);
+    // The browser talks ONLY to this Vercel site (HTTPS). Vercel forwards /slot/<id>/... to the primary bot, which
+    // forwards it over HTTP to the slot's own server (set in /admin). Adding server 4, 5 ... needs no change here.
     const tfetch=(url,ms)=>fetch(url,{headers:{Accept:'application/json'},signal:AbortSignal.timeout(ms)});
     async function slotRequest(q){
-      let assignedSlot=0;try{const sr=await tfetch('/api/pair-slots?number='+encodeURIComponent(n),12000);const sd=await sr.json();assignedSlot=Number(sd.assignedSlot||0)}catch(_){}
-      const all=[1,2,3].map(id=>({id}));
-      const candidates=assignedSlot?all.filter(x=>x.id===assignedSlot):all;
+      let ids=[],assignedSlot=0;
+      try{const sr=await tfetch('/api/pair-slots?number='+encodeURIComponent(n),12000);const sd=await sr.json();assignedSlot=Number(sd.assignedSlot||0);ids=(sd.slots||[]).filter(x=>x.url).map(x=>Number(x.id))}catch(_){}
+      if(!ids.length)ids=[1,2,3];
       let reachable=0,lastErr='';
-      for(const slot of candidates){
-        const base=slotBase(slot);
-        try{
-          if(!assignedSlot){const sr=await tfetch(base+'/api/slot-status',8000);const st=await sr.json();reachable++;if(!(Number(st.available)>0))continue}else reachable++;
-          const resp=await tfetch(base+'/api/get?'+q,90000);
-          return {response:resp,slot};
-        }catch(e){lastErr=e.name==='TimeoutError'?'timeout':String(e.message||e)}
+      const ask=async(id)=>tfetch('/slot/'+id+'/api/get?'+q,90000);
+      if(assignedSlot){ // this number already lives on one server: always use that one
+        try{return {response:await ask(assignedSlot),slot:{id:assignedSlot}}}catch(e){throw Error('Your pairing server is not reachable ('+(e.name==='TimeoutError'?'timeout':'offline')+'). Try again in a minute.')}
       }
-      throw Error(reachable?'All pairing slots are full right now.':'Pairing server is not reachable ('+(lastErr||'offline')+'). Make sure the bot is running and try again.');
+      // ask every server for its free space at the same time, but use the lowest-numbered one with space as soon as IT answers
+      // (a dead server 3 never delays a healthy server 1)
+      const probes=ids.slice().sort((a,b)=>a-b).map(id=>tfetch('/slot/'+id+'/api/slot-status',8000).then(async sr=>{const st=await sr.json();return {id,ok:sr.ok&&st&&st.status==='ok',free:Number(st.available)>0}}).catch(e=>{lastErr=e.name==='TimeoutError'?'timeout':'offline';return {id,ok:false,free:false}}));
+      for(const pr of probes){
+        const s=await pr;if(s.ok)reachable++;
+        if(s.ok&&s.free){try{return {response:await ask(s.id),slot:{id:s.id}}}catch(e){lastErr=e.name==='TimeoutError'?'timeout':'offline'}}
+      }
+      throw Error(reachable?'All pairing servers are full right now.':'Pairing server is not reachable ('+(lastErr||'offline')+'). Make sure the bot is running and try again.');
     }
     const {response:r}=await slotRequest(q);
     const d=await r.json().catch(()=>({}));

@@ -22,16 +22,8 @@
       "destination": "/index.html"
     },
     {
-      "source": "/slot/1/:path*",
-      "destination": "http://51.68.34.78:20058/:path*"
-    },
-    {
-      "source": "/slot/2/:path*",
-      "destination": "http://51.75.118.170:20083/:path*"
-    },
-    {
-      "source": "/slot/3/:path*",
-      "destination": "http://51.83.6.5:20139/:path*"
+      "source": "/slot/:id/:path*",
+      "destination": "http://51.68.34.78:20058/api/slot-proxy/:id/:path*"
     },
     {
       "source": "/api/get",
@@ -58,4 +50,4 @@
       "destination": "http://51.68.34.78:20058/ping"
     }
   ]
-    }
+}

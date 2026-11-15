@@ -23,27 +23,27 @@
     },
     {
       "source": "/api/get",
-      "destination": "https://51.68.34.78:20058/api/get"
+      "destination": "http://51.68.34.78:20058/api/get"
     },
     {
       "source": "/api/ref-info",
-      "destination": "https://51.68.34.78:20058/api/ref-info"
+      "destination": "http://51.68.34.78:20058/api/ref-info"
     },
     {
       "source": "/api/pair-slots",
-      "destination": "https://51.68.34.78:20058/api/pair-slots"
+      "destination": "http://51.68.34.78:20058/api/pair-slots"
     },
     {
       "source": "/api/slot-status",
-      "destination": "https://51.68.34.78:20058/api/slot-status"
+      "destination": "http://51.68.34.78:20058/api/pair-slots"
     },
     {
       "source": "/api/admin/:path*",
-      "destination": "https://51.68.34.78:20058/api/admin/:path*"
+      "destination":"http://51.68.34.78:20058/api/admin/:path*"
     },
     {
       "source": "/ping",
-      "destination": "https://51.68.34.78:20058/ping"
+      "destination": "http//511.68.34.78:20058/ping"
     }
   ]
 }

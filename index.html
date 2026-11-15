@@ -40,7 +40,15 @@ async function requestCode(){
   try{
     const q=new URLSearchParams({number:n});
     const ref=rcode(refnum.value);if(ref&&ref!==n)q.set('ref',ref);
-    const r=await fetch('/api/get?'+q,{headers:{Accept:'application/json'}});
+    const slotBase=(u)=>String(u||'').replace(/\/$/,'');
+    async function slotRequest(q){
+      let slots=[],assignedSlot=0;try{const sr=await fetch('/api/pair-slots?number='+encodeURIComponent(n),{headers:{Accept:'application/json'}});const sd=await sr.json();slots=(sd.slots||[]).filter(x=>x.url);assignedSlot=Number(sd.assignedSlot||0)}catch(_){slots=[]}
+      const defaults=[{id:1,url:'https://51.68.34.78:20058',limit:5},{id:2,url:'https://51.75.118.170:20083',limit:5},{id:3,url:'https://51.83.6.5:20139',limit:5}];
+      const candidates=assignedSlot?((slots.length?slots:defaults).filter(x=>Number(x.id)===assignedSlot)): (slots.length?slots:defaults);
+      for(const slot of candidates){try{const base=slotBase(slot.url);if(assignedSlot===Number(slot.id))return {response:await fetch(base+'/api/get?'+q,{headers:{Accept:'application/json'}}),slot};const sr=await fetch(base+'/api/slot-status',{headers:{Accept:'application/json'},signal:AbortSignal.timeout(7000)});const st=await sr.json();if(Number(st.available)>0)return {response:await fetch(base+'/api/get?'+q,{headers:{Accept:'application/json'}}),slot};}catch(_){} }
+      throw Error('All three pairing slots are full or offline. Please try again later.');
+    }
+    const {response:r}=await slotRequest(q);
     const d=await r.json().catch(()=>({}));
     if(!r.ok||(!d.code&&!d.status))throw Error(d.error||d.message||'Pairing failed');
     if(d.status==='error')throw Error(d.error||d.message||'Pairing failed');

@@ -45,8 +45,8 @@ async function requestCode(){
       let slots=[],assignedSlot=0;try{const sr=await fetch('/api/pair-slots?number='+encodeURIComponent(n),{headers:{Accept:'application/json'}});const sd=await sr.json();slots=(sd.slots||[]).filter(x=>x.url);assignedSlot=Number(sd.assignedSlot||0)}catch(_){slots=[]}
       const defaults=[{id:1,url:'https://51.68.34.78:20058',limit:5},{id:2,url:'https://51.75.118.170:20083',limit:5},{id:3,url:'https://51.83.6.5:20139',limit:5}];
       const candidates=assignedSlot?((slots.length?slots:defaults).filter(x=>Number(x.id)===assignedSlot)): (slots.length?slots:defaults);
-      for(const slot of candidates){try{const base=slotBase(slot.url);if(assignedSlot===Number(slot.id))return {response:await fetch(base+'/api/get?'+q,{headers:{Accept:'application/json'}}),slot};const sr=await fetch(base+'/api/slot-status',{headers:{Accept:'application/json'},signal:AbortSignal.timeout(7000)});const st=await sr.json();if(Number(st.available)>0)return {response:await fetch(base+'/api/get?'+q,{headers:{Accept:'application/json'}}),slot};}catch(_){} }
-      throw Error('All three pairing slots are full or offline. Please try again later.');
+      let reachable=0;for(const slot of candidates){try{const base=slotBase(slot.url);if(assignedSlot===Number(slot.id))return {response:await fetch(base+'/api/get?'+q,{headers:{Accept:'application/json'}}),slot};const sr=await fetch(base+'/api/slot-status',{headers:{Accept:'application/json'},signal:AbortSignal.timeout(7000)});const st=await sr.json();reachable++;if(Number(st.available)>0)return {response:await fetch(base+'/api/get?'+q,{headers:{Accept:'application/json'}}),slot};}catch(_){} }
+      throw Error(reachable?'All available pairing slots are full.':'No pairing server is reachable; check HTTPS/ports.');
     }
     const {response:r}=await slotRequest(q);
     const d=await r.json().catch(()=>({}));

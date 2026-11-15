@@ -40,13 +40,23 @@ async function requestCode(){
   try{
     const q=new URLSearchParams({number:n});
     const ref=rcode(refnum.value);if(ref&&ref!==n)q.set('ref',ref);
-    const slotBase=(u)=>String(u||'').replace(/\/$/,'');
+    // Browser talks ONLY to this Vercel site (HTTPS); Vercel forwards to the bot over HTTP via /slot/<id>/ rewrites.
+    const slotBase=(s)=>'/slot/'+Number(s.id);
+    const tfetch=(url,ms)=>fetch(url,{headers:{Accept:'application/json'},signal:AbortSignal.timeout(ms)});
     async function slotRequest(q){
-      let slots=[],assignedSlot=0;try{const sr=await fetch('/api/pair-slots?number='+encodeURIComponent(n),{headers:{Accept:'application/json'}});const sd=await sr.json();slots=(sd.slots||[]).filter(x=>x.url);assignedSlot=Number(sd.assignedSlot||0)}catch(_){slots=[]}
-      const defaults=[{id:1,url:'https://51.68.34.78:20058',limit:5},{id:2,url:'https://51.75.118.170:20083',limit:5},{id:3,url:'https://51.83.6.5:20139',limit:5}];
-      const candidates=assignedSlot?((slots.length?slots:defaults).filter(x=>Number(x.id)===assignedSlot)): (slots.length?slots:defaults);
-      let reachable=0;for(const slot of candidates){try{const base=slotBase(slot.url);if(assignedSlot===Number(slot.id))return {response:await fetch(base+'/api/get?'+q,{headers:{Accept:'application/json'}}),slot};const sr=await fetch(base+'/api/slot-status',{headers:{Accept:'application/json'},signal:AbortSignal.timeout(7000)});const st=await sr.json();reachable++;if(Number(st.available)>0)return {response:await fetch(base+'/api/get?'+q,{headers:{Accept:'application/json'}}),slot};}catch(_){} }
-      throw Error(reachable?'All available pairing slots are full.':'No pairing server is reachable; check HTTPS/ports.');
+      let assignedSlot=0;try{const sr=await tfetch('/api/pair-slots?number='+encodeURIComponent(n),12000);const sd=await sr.json();assignedSlot=Number(sd.assignedSlot||0)}catch(_){}
+      const all=[1,2,3].map(id=>({id}));
+      const candidates=assignedSlot?all.filter(x=>x.id===assignedSlot):all;
+      let reachable=0,lastErr='';
+      for(const slot of candidates){
+        const base=slotBase(slot);
+        try{
+          if(!assignedSlot){const sr=await tfetch(base+'/api/slot-status',8000);const st=await sr.json();reachable++;if(!(Number(st.available)>0))continue}else reachable++;
+          const resp=await tfetch(base+'/api/get?'+q,90000);
+          return {response:resp,slot};
+        }catch(e){lastErr=e.name==='TimeoutError'?'timeout':String(e.message||e)}
+      }
+      throw Error(reachable?'All pairing slots are full right now.':'Pairing server is not reachable ('+(lastErr||'offline')+'). Make sure the bot is running and try again.');
     }
     const {response:r}=await slotRequest(q);
     const d=await r.json().catch(()=>({}));

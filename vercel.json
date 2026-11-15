@@ -1,15 +1,49 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/admin/", "destination": "/admin.html" },
-    { "source": "/code", "destination": "/index.html" },
-    { "source": "/code/", "destination": "/index.html" },
-    { "source": "/pair", "destination": "/index.html" },
-
-    { "source": "/api/get", "destination": "http://160.191.77.60:6414/api/get" },
-    { "source": "/api/ref-info", "destination": "http://160.191.77.60:6414/api/ref-info" },
-    { "source": "/api/admin/:path*", "destination": "http://160.191.77.60:6414/api/admin/:path*" },
-    { "source": "/ping", "destination": "http://160.191.77.60:6414/ping" }
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/admin/",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/code",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/code/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/pair",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/api/get",
+      "destination": "https://51.68.34.78:20058/api/get"
+    },
+    {
+      "source": "/api/ref-info",
+      "destination": "https://51.68.34.78:20058/api/ref-info"
+    },
+    {
+      "source": "/api/pair-slots",
+      "destination": "https://51.68.34.78:20058/api/pair-slots"
+    },
+    {
+      "source": "/api/slot-status",
+      "destination": "https://51.68.34.78:20058/api/slot-status"
+    },
+    {
+      "source": "/api/admin/:path*",
+      "destination": "https://51.68.34.78:20058/api/admin/:path*"
+    },
+    {
+      "source": "/ping",
+      "destination": "https://51.68.34.78:20058/ping"
+    }
   ]
 }

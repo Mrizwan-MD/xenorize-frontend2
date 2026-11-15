@@ -22,6 +22,18 @@
       "destination": "/index.html"
     },
     {
+      "source": "/slot/1/:path*",
+      "destination": "http://51.68.34.78:20058/:path*"
+    },
+    {
+      "source": "/slot/2/:path*",
+      "destination": "http://51.75.118.170:20083/:path*"
+    },
+    {
+      "source": "/slot/3/:path*",
+      "destination": "http://51.83.6.5:20139/:path*"
+    },
+    {
       "source": "/api/get",
       "destination": "http://51.68.34.78:20058/api/get"
     },
@@ -35,15 +47,15 @@
     },
     {
       "source": "/api/slot-status",
-      "destination": "http://51.68.34.78:20058/api/pair-slots"
+      "destination": "http://51.68.34.78:20058/api/slot-status"
     },
     {
       "source": "/api/admin/:path*",
-      "destination":"http://51.68.34.78:20058/api/admin/:path*"
+      "destination": "http://51.68.34.78:20058/api/admin/:path*"
     },
     {
       "source": "/ping",
-      "destination": "http//511.68.34.78:20058/ping"
+      "destination": "http://51.68.34.78:20058/ping"
     }
   ]
-}
+    }

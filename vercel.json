@@ -22,32 +22,20 @@
       "destination": "/index.html"
     },
     {
-      "source": "/slot/:id/:path*",
-      "destination": "http://51.68.34.78:20058/api/slot-proxy/:id/:path*"
-    },
-    {
       "source": "/api/get",
-      "destination": "http://51.68.34.78:20058/api/get"
+      "destination": "http://51.83.6.5:20139/api/get"
     },
     {
       "source": "/api/ref-info",
-      "destination": "http://51.68.34.78:20058/api/ref-info"
-    },
-    {
-      "source": "/api/pair-slots",
-      "destination": "http://51.68.34.78:20058/api/pair-slots"
-    },
-    {
-      "source": "/api/slot-status",
-      "destination": "http://51.68.34.78:20058/api/slot-status"
+      "destination": "http://51.83.6.5:20139/api/ref-info"
     },
     {
       "source": "/api/admin/:path*",
-      "destination": "http://51.68.34.78:20058/api/admin/:path*"
+      "destination": "http://51.83.6.5:20139/api/admin/:path*"
     },
     {
       "source": "/ping",
-      "destination": "http://51.68.34.78:20058/ping"
+      "destination": "http://51.83.6.5:20139/ping"
     }
   ]
 }

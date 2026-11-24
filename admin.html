@@ -1,156 +1,1225 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>XENORIZE Admin</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Xenorize MD | Ops Console</title>
+<meta name="theme-color" content="#0d1014"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <style>
-:root{--bg:#080405;--line:#5a2a31;--text:#fff5f6;--muted:#b49da1;--red:#ff304b;--green:#79efb4;--yellow:#ffd166}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0,#5d101b,transparent 35%),var(--bg);color:var(--text);font:14px/1.5 system-ui,sans-serif}
-.wrap{width:min(900px,calc(100% - 28px));margin:auto;padding:22px 0 50px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand{display:flex;gap:11px;align-items:center}.logo{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#ff8199,#ff704d);color:#07111a;font-weight:900;font-size:20px}
-h1{margin:0;font-size:20px}.muted{color:var(--muted);font-size:12px}
-.card{background:#160b0ded;border:1px solid #ff304b33;border-radius:18px;padding:17px;margin-top:16px;box-shadow:0 20px 60px #0007}
-.card h2{margin:0 0 10px;font-size:14px;letter-spacing:.06em;color:#ffd5d9}
-.input,select{width:100%;border:1px solid var(--line);border-radius:11px;background:#0b0506;color:var(--text);padding:11px;outline:0;font:inherit}
-.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1 1 150px}
-.btn{border:0;border-radius:11px;padding:11px 14px;background:linear-gradient(100deg,#a80d29,#ff304b);color:#fff;font-weight:700;cursor:pointer}.btn.ghost{background:#2a1418;border:1px solid var(--line)}
-.btn:disabled{opacity:.6}.notice{margin-top:9px;font-size:12px;color:var(--green);min-height:18px}.notice.error{color:#ff9da8}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#0b0506;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}.stat b{display:block;font-size:20px}
-table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:8px 6px;border-bottom:1px solid #ffffff12;text-align:left}th{color:var(--muted);font-weight:600;font-size:11px}
-.pill{padding:2px 8px;border-radius:99px;font-size:11px;background:#2a1418}.on{color:var(--green)}.off{color:#ff9da8}.prem{color:var(--yellow)}
-.gl{max-height:340px;overflow:auto;border:1px solid var(--line);border-radius:12px;background:#0b0506;margin-top:10px}
-.gh{position:sticky;top:0;background:#1d0d11;padding:8px 10px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid var(--line)}
-.gi{display:flex;align-items:center;gap:10px;padding:8px 10px;border-bottom:1px solid #ffffff0d;cursor:pointer}.gi:hover{background:#ffffff08}.gi input,.gh input{width:18px;height:18px;accent-color:#ff304b;flex:none}
-.gi span.n{flex:1;word-break:break-word}.bar{height:8px;border-radius:9px;background:#2a1418;overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#a80d29,#79efb4);transition:width .3s}
-textarea.input{min-height:78px;resize:vertical}.btn.green{background:linear-gradient(100deg,#0b7a4b,#25d366)}.small{font-size:12px;padding:7px 10px}
-.scroll{overflow-x:auto}.hide{display:none}.login{max-width:400px;margin:14vh auto}
-.chatbox{height:360px;overflow:auto;border:1px solid var(--line);border-radius:12px;background:#0b0506;padding:10px;margin-top:10px}
-.bubble{max-width:86%;margin:7px 0;padding:8px 10px;border-radius:12px;background:#241116;border:1px solid #ffffff10;white-space:pre-wrap;word-break:break-word}
-.bubble.me{margin-left:auto;background:#103b2c;border-color:#79efb433}.bubble .meta{display:block;color:var(--muted);font-size:10px;margin-bottom:3px}.bubble img,.bubble video{max-width:240px;max-height:220px;border-radius:9px;display:block;margin-top:5px}.bubble audio{max-width:240px;margin-top:5px}.bubble .actions{display:flex;gap:6px;margin-top:7px}.bubble .actions button{font-size:11px;padding:5px 7px}.profile{padding:9px;border:1px solid var(--line);border-radius:12px;background:#0b0506;margin-top:8px}.profile img{width:42px;height:42px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:8px}
-.chatrow{display:block;padding:10px;border-bottom:1px solid #ffffff0d;cursor:pointer}.chatrow:hover,.chatrow.active{background:#ffffff0b}.chatrow b{display:block}.chatrow small{display:block;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-</style></head><body><div class="wrap">
+  :root{
+    --bg:#0a0c0f;
+    --panel:#12161b;
+    --panel-raised:#171c22;
+    --hairline:#262c33;
+    --text:#e7eaee;
+    --text-dim:#838c96;
+    --amber:#f5a623;
+    --amber-dim:rgba(245,166,35,.14);
+    --green:#35d488;
+    --green-dim:rgba(53,212,136,.12);
+    --red:#ff5c5c;
+    --red-dim:rgba(255,92,92,.12);
+    --mono:'IBM Plex Mono', monospace;
+    --sans:'Inter', sans-serif;
+    --display:'Space Grotesk', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--bg); color:var(--text); font-family:var(--sans);
+    min-height:100vh;
+  }
+  body::before{
+    content:'';
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+    background-size:34px 34px;
+    pointer-events:none; z-index:0;
+  }
+  .wrap{position:relative; z-index:1; max-width:920px; margin:0 auto; padding:28px 20px 60px;}
 
-<div id="login" class="card login"><div class="brand"><div class="logo">X</div><div><h1>XENORIZE Admin</h1><div class="muted">Enter the ADMIN_KEY of your bot panel</div></div></div>
-<p><input id="key" class="input" type="password" placeholder="ADMIN_KEY"></p><button id="loginBtn" class="btn" style="width:100%">Login</button><div id="loginMsg" class="notice"></div></div>
+  /* ===== gate ===== */
+  .gate{
+    min-height:80vh; display:flex; align-items:center; justify-content:center;
+  }
+  .gate-card{
+    width:100%; max-width:360px;
+    background:var(--panel); border:1px solid var(--hairline); border-radius:16px;
+    padding:28px; text-align:center;
+    box-shadow:0 30px 90px rgba(0,0,0,.5);
+  }
+  .gate-card i{font-size:22px; color:var(--amber); margin-bottom:10px;}
+  .gate-card h2{font-family:var(--display); font-size:16px; margin-bottom:4px;}
+  .gate-card p{font-family:var(--mono); font-size:11px; color:var(--text-dim); margin-bottom:18px;}
+  .gate-card input{
+    width:100%; background:var(--panel-raised); border:1px solid var(--hairline); border-radius:8px;
+    padding:11px 12px; color:var(--text); font-family:var(--mono); font-size:13px; margin-bottom:12px; outline:none;
+  }
+  .gate-card input:focus{border-color:var(--amber);}
+  .gate-card button{
+    width:100%; background:var(--amber); color:#1a1200; border:none; border-radius:8px;
+    padding:12px; font-family:var(--display); font-weight:700; font-size:12px; letter-spacing:.06em;
+    text-transform:uppercase; cursor:pointer;
+  }
+  .gate-err{color:var(--red); font-family:var(--mono); font-size:11px; margin-top:10px; min-height:14px;}
 
-<div id="panel" class="hide">
-<div class="top"><div class="brand"><div class="logo">X</div><div><h1>XENORIZE Admin</h1><div class="muted">Sessions · Premium · Referrals</div></div></div><div><button id="refresh" class="btn ghost">Refresh</button> <button id="logout" class="btn ghost">Logout</button></div></div>
+  /* ===== header ===== */
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:24px; flex-wrap:wrap; gap:12px;
+  }
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand-mark svg{width:28px;height:28px;}
+  .brand-text{font-family:var(--display); font-weight:700; font-size:16px; letter-spacing:.04em;}
+  .brand-text small{display:block; font-family:var(--mono); font-weight:400; font-size:10px; color:var(--text-dim); letter-spacing:.12em; margin-top:1px;}
+  .header-actions{display:flex; align-items:center; gap:10px;}
+  .link-dot{
+    display:flex; align-items:center; gap:6px; font-family:var(--mono); font-size:10px; color:var(--green); letter-spacing:.06em;
+  }
+  .link-dot .pip{width:6px;height:6px;border-radius:50%;background:var(--green); box-shadow:0 0 8px var(--green); animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .btn-ghost{
+    background:none; border:1px solid var(--hairline); color:var(--text-dim); border-radius:8px;
+    padding:7px 12px; font-family:var(--sans); font-size:11px; cursor:pointer; display:flex; align-items:center; gap:6px;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .btn-ghost:hover{border-color:var(--red); color:var(--red);}
 
-<div class="card"><h2>OVERVIEW</h2><div class="stats"><div class="stat"><b id="sSaved">-</b><span class="muted">Saved sessions</span></div><div class="stat"><b id="sOn">-</b><span class="muted">Connected</span></div><div class="stat"><b id="sGoal">-</b><span class="muted">Referral goal</span></div></div></div>
+  /* ===== instrument cluster ===== */
+  .cluster{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:20px;
+  }
+  @media (max-width:640px){ .cluster{grid-template-columns:repeat(2,1fr);} }
+  .gauge{
+    background:var(--panel); border:1px solid var(--hairline); border-radius:12px; padding:14px 16px;
+  }
+  .gauge-label{font-family:var(--mono); font-size:9px; letter-spacing:.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px;}
+  .gauge-value{font-family:var(--display); font-weight:700; font-size:22px;}
+  .gauge-value.amber{color:var(--amber);}
+  .gauge-value.green{color:var(--green);}
 
-<div class="card"><h2>SESSIONS</h2><div class="scroll"><table><thead><tr><th>Number</th><th>Status</th><th>Referrals</th><th>Premium</th><th></th></tr></thead><tbody id="rows"><tr><td colspan="5" class="muted">Loading…</td></tr></tbody></table></div>
-<div class="row" style="margin-top:12px"><button id="reconnect" class="btn ghost">Reconnect all saved sessions</button></div><div id="sessMsg" class="notice"></div></div>
+  /* ===== panels ===== */
+  .panel{
+    background:var(--panel); border:1px solid var(--hairline); border-radius:14px; margin-bottom:18px; overflow:hidden;
+  }
+  .panel-head{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:14px 18px; border-bottom:1px solid var(--hairline);
+  }
+  .panel-title{font-family:var(--display); font-weight:600; font-size:13px; display:flex; align-items:center; gap:8px;}
+  .panel-title i{color:var(--amber); font-size:12px;}
+  .panel-body{padding:16px 18px;}
 
-<div class="card"><h2>STATUS ON GROUP ICON (SWGC)</h2>
-<div class="row"><select id="gScope"></select></div>
-<div class="row" style="margin-top:10px"><textarea id="gText" class="input" placeholder="Message ya link (image/video ke sath ho to caption ban jayega)"></textarea></div>
-<div class="row" style="margin-top:10px"><input id="gFile" class="input" type="file" accept="image/*,video/*,audio/*"><select id="gColor"><option value="">Text colour: random</option><option value="blue">blue</option><option value="green">green</option><option value="red">red</option><option value="purple">purple</option><option value="pink">pink</option><option value="orange">orange</option><option value="teal">teal</option><option value="black">black</option></select><select id="gFont"><option value="">Font: default</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
-<div class="muted" id="gFileInfo" style="margin-top:6px"></div>
-<div class="row" style="margin-top:12px"><button id="gSwgc" class="btn">SWGC · groups chuno</button><button id="gAll" class="btn green">SWGCALL · sab groups</button></div>
-<div id="gPick" class="hide">
- <div class="row" style="margin-top:12px"><input id="gSearch" class="input" placeholder="Group search..."><button id="gSelAll" class="btn ghost small">Select all</button><button id="gSelNone" class="btn ghost small">Clear</button></div>
- <div id="gList" class="gl"></div>
- <div class="row" style="margin-top:10px"><button id="gPost" class="btn">Post on selected groups (0)</button></div>
+  .btn-amber{
+    background:var(--amber); color:#1a1200; border:none; border-radius:8px; padding:9px 16px;
+    font-family:var(--display); font-weight:700; font-size:11px; letter-spacing:.05em; text-transform:uppercase;
+    cursor:pointer; display:flex; align-items:center; gap:6px; transition:transform .1s ease;
+  }
+  .btn-amber:hover{transform:translateY(-1px);}
+  .btn-amber:disabled{opacity:.5; cursor:not-allowed; transform:none;}
+  .spinner{width:12px;height:12px;border:2px solid rgba(26,18,0,.3); border-top-color:#1a1200; border-radius:50%; animation:spin .7s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .broadcast-results{margin-top:14px; display:none; flex-direction:column; gap:6px;}
+  .broadcast-results.show{display:flex;}
+  .result-row{
+    display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px;
+    padding:8px 10px; border-radius:8px; background:var(--panel-raised); border:1px solid var(--hairline);
+  }
+  .result-row i{width:12px;}
+  .result-row.ok i{color:var(--green);}
+  .result-row.fail i{color:var(--red);}
+
+  /* server rack */
+  .rack{display:flex; flex-direction:column; gap:8px;}
+  .blade{
+    display:grid; grid-template-columns:auto 1fr auto auto; align-items:center; gap:14px;
+    padding:12px 14px; background:var(--panel-raised); border:1px solid var(--hairline); border-radius:10px;
+  }
+  @media (max-width:720px){ .blade{grid-template-columns:1fr; gap:8px;} }
+  .blade .led{width:9px;height:9px;border-radius:50%; background:var(--text-dim); flex-shrink:0;}
+  .blade.online .led{background:var(--green); box-shadow:0 0 6px var(--green);}
+  .blade.offline .led{background:var(--red); box-shadow:0 0 6px var(--red);}
+  .blade-info{min-width:0;}
+  .blade-name{font-family:var(--sans); font-weight:600; font-size:13px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .blade-id{font-family:var(--mono); font-size:10px; color:var(--text-dim); background:var(--panel); padding:1px 6px; border-radius:4px;}
+  .blade-url{font-family:var(--mono); font-size:11px; color:var(--text-dim); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:340px;}
+  .gauge-bar-wrap{min-width:140px;}
+  .gauge-bar-label{font-family:var(--mono); font-size:10px; color:var(--text-dim); margin-bottom:4px;}
+  .gauge-bar{height:5px; background:var(--panel); border-radius:3px; overflow:hidden;}
+  .gauge-bar-fill{height:100%; background:var(--amber); border-radius:3px;}
+  .blade-actions{display:flex; align-items:center; gap:6px;}
+  .icon-btn{
+    width:30px; height:30px; border-radius:7px; border:1px solid var(--hairline); background:var(--panel);
+    color:var(--text-dim); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:12px;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .icon-btn:hover{color:var(--text);}
+  .icon-btn.danger:hover{color:var(--red); border-color:var(--red);}
+  .icon-btn.toggle.is-active{color:var(--green); border-color:var(--green);}
+  .icon-btn.toggle:not(.is-active){color:var(--text-dim);}
+
+  .rack-empty{
+    font-family:var(--mono); font-size:12px; color:var(--text-dim); text-align:center; padding:24px;
+  }
+
+  /* add server form */
+  .add-form{display:none; margin-top:14px; padding-top:14px; border-top:1px solid var(--hairline); gap:10px; grid-template-columns:1fr 1fr 1.4fr auto;}
+  .add-form.show{display:grid;}
+  @media (max-width:720px){ .add-form.show{grid-template-columns:1fr;} }
+  .add-form input{
+    background:var(--panel); border:1px solid var(--hairline); border-radius:8px; padding:10px 12px;
+    color:var(--text); font-family:var(--mono); font-size:12px; outline:none;
+  }
+  .add-form input:focus{border-color:var(--amber);}
+
+  .toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--panel-raised); border:1px solid var(--hairline); padding:10px 16px; border-radius:10px;
+    font-family:var(--sans); font-size:12px; font-weight:500; display:flex; align-items:center; gap:8px;
+    opacity:0; pointer-events:none; transition:all .25s ease; z-index:50;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+  .toast.error{border-color:rgba(255,92,92,.4); color:var(--red);}
+  .toast:not(.error){border-color:rgba(53,212,136,.4); color:var(--green);}
+
+  .hidden{display:none !important;}
+  .nav-row{display:flex; gap:10px; margin-bottom:18px;}
+  .nav-row{display:flex;gap:12px;flex-wrap:wrap}.nav-tile{flex:1;min-width:240px; text-align:left; padding:16px; background:var(--panel); border:1px solid var(--hairline); border-radius:12px; color:var(--text); cursor:pointer; font-family:var(--sans);}
+  .nav-tile:hover{border-color:var(--amber);}.nav-tile i{color:var(--amber); margin-right:8px;}
+  .view-head{display:flex; align-items:center; gap:12px; margin-bottom:16px;}.view-head h2{font-family:var(--display); margin:0; font-size:18px;}
+  .session-tabs{display:flex; gap:7px; margin-bottom:14px;}.session-tabs button{background:var(--panel); border:1px solid var(--hairline); color:var(--text-dim); padding:8px 13px; border-radius:7px; cursor:pointer;}.session-tabs button.active{border-color:var(--amber); color:var(--amber);}
+  .setting-row{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid var(--hairline); font-family:var(--mono); font-size:12px;}.setting-row:last-child{border:0;}
+  .switch{appearance:none; width:38px; height:21px; border-radius:20px; background:var(--text-dim); position:relative; cursor:pointer; transition:.15s;}.switch:checked{background:var(--green);}.switch:before{content:''; position:absolute; width:15px;height:15px;background:#fff;border-radius:50%;top:3px;left:3px;transition:.15s;}.switch:checked:before{left:20px;}
+  .admin-input,.admin-select{width:100%; box-sizing:border-box; background:var(--panel); border:1px solid var(--hairline); border-radius:8px; padding:10px; color:var(--text); font-family:var(--mono);}.terminal{background:#080a0d;border:1px solid var(--hairline);border-radius:9px;min-height:170px;max-height:310px;overflow:auto;padding:12px;color:var(--green);font:12px var(--mono);white-space:pre-wrap;margin-bottom:10px;}.chat-grid{display:grid;grid-template-columns:minmax(220px,.85fr) 2fr;gap:0;min-height:420px;border:1px solid var(--hairline);border-radius:9px;overflow:hidden;}
+  .chat-list{background:#111b21;overflow-y:auto;max-height:480px;border-right:1px solid var(--hairline);}
+  .chat-search{padding:10px;position:sticky;top:0;background:#111b21;z-index:1;}
+  .chat-search input{width:100%;box-sizing:border-box;background:#202c33;border:none;border-radius:20px;padding:8px 12px 8px 32px;color:var(--text);font:12px var(--sans);outline:none;}
+  .chat-search{position:relative;}
+  .chat-search i{position:absolute;left:22px;top:19px;color:var(--text-dim);font-size:13px;}
+  .chat-filters{display:flex;gap:5px;padding:8px 10px;background:#111b21;border-bottom:1px solid #1e2b32;overflow-x:auto;}
+  .chat-filter{flex:0 0 auto;border:1px solid #2a3942;border-radius:16px;background:transparent;color:#aebac1;padding:5px 9px;font:11px var(--sans);cursor:pointer;}
+  .chat-filter.active{background:#214d3d;border-color:#2b8a64;color:#d7f7e9;}
+  .chat-item{display:flex;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid #1a2329;cursor:pointer;}
+  .chat-item:hover{background:#182229;}
+  .chat-item.selected{background:#202c33;border-left:3px solid var(--green);padding-left:9px;}
+  .chat-avatar{flex:none;width:38px;height:38px;border-radius:50%;background:#2a3942;display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:15px;}
+  .chat-meta{flex:1;min-width:0;}
+  .chat-name{font:12px var(--sans);font-weight:600;color:var(--text);display:flex;justify-content:space-between;gap:6px;}
+  .chat-name time{font:10px var(--mono);font-weight:400;color:var(--text-dim);flex:none;}
+  .chat-preview{color:var(--text-dim);font:11px var(--sans);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
+  .thread{background:#0b141a;display:flex;flex-direction:column;max-height:480px;}
+  .thread-head{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#202c33;border-bottom:1px solid var(--hairline);flex:none;}
+  .thread-head .chat-avatar{width:32px;height:32px;font-size:13px;}
+  .thread-head strong{font:12px var(--sans);color:var(--text);}
+  .thread-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:6px;}
+  .message{max-width:68%;padding:7px 10px;border-radius:9px;font:12px var(--sans);line-height:1.5;position:relative;}
+  .message-media{display:block;max-width:min(320px,100%);max-height:420px;object-fit:contain;border-radius:7px;margin-bottom:5px}.message-audio{display:block;max-width:320px;width:100%;margin:4px 0}
+  .message.me{align-self:flex-end;background:#005c4b;border-top-right-radius:2px;color:var(--text);}
+  .message.them{align-self:flex-start;background:#202c33;border-top-left-radius:2px;color:var(--text);}
+  .message .sender-label{display:block;font:10px var(--mono);color:var(--amber);margin-bottom:3px;}
+  .message time{display:block;text-align:right;color:var(--text-dim);font:10px var(--mono);margin-top:4px;}
+  .message.me time i{color:#53bdeb;margin-left:3px;}
+  .control-mode{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:10px;border:1px solid var(--hairline);border-radius:8px;font:11px var(--mono);}.mode-pill{padding:3px 8px;border-radius:999px;background:var(--red-dim);color:var(--red);font-weight:600;}.mode-pill.on{background:var(--green-dim);color:var(--green);}.thread-compose{display:flex;gap:7px;padding:9px;background:#202c33;border-top:1px solid var(--hairline);}.thread-compose input{flex:1;background:#111b21;border:1px solid var(--hairline);border-radius:7px;padding:9px;color:var(--text);font:12px var(--sans);}.bubble-actions{display:none;gap:5px;margin-top:5px}.message:hover .bubble-actions{display:flex}.bubble-actions button{background:none;border:0;color:var(--text-dim);cursor:pointer;font-size:11px}.channel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}.channel-card{padding:13px;border:1px solid var(--hairline);border-radius:9px;background:var(--panel-raised);font:11px var(--mono)}.channel-card h4{font:13px var(--sans);margin-bottom:5px}.channel-card button{margin:4px 4px 0 0}.channel-add{display:flex;gap:8px;margin-bottom:12px}.channel-add input{flex:1}
+  /* ===== ultra finish + WhatsApp-style chat surface ===== */
+  body{background:radial-gradient(900px 460px at 8% -10%,rgba(245,166,35,.08),transparent 62%),radial-gradient(700px 460px at 98% 12%,rgba(255,92,92,.06),transparent 65%),var(--bg);}
+  .gate-card,.panel,.gauge,.nav-tile{background:linear-gradient(145deg,rgba(255,255,255,.025),transparent 38%),var(--panel);box-shadow:0 16px 42px rgba(0,0,0,.18),inset 0 1px rgba(255,255,255,.025);}
+  .panel{transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;}
+  .panel:hover{border-color:#333b44;box-shadow:0 20px 48px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.03);}
+  .gauge{position:relative;overflow:hidden;transition:transform .2s ease,border-color .2s ease;}
+  .gauge:after{content:'';position:absolute;inset:auto -30% 0;height:2px;background:linear-gradient(90deg,transparent,var(--amber),var(--red),transparent);opacity:.7;}
+  .gauge:hover,.nav-tile:hover{transform:translateY(-2px);border-color:rgba(245,166,35,.55);}
+  .gauge-value{font-variant-numeric:tabular-nums;text-shadow:0 0 20px currentColor;}
+  .blade,.result-row,.channel-card{background:linear-gradient(135deg,rgba(255,255,255,.025),transparent 44%),var(--panel-raised);box-shadow:0 8px 22px rgba(0,0,0,.12);transition:transform .18s ease,border-color .18s ease;}
+  .blade:hover,.channel-card:hover{transform:translateY(-2px);border-color:#3a424c;}
+  .nav-tile{transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;}.nav-tile i{filter:drop-shadow(0 0 8px rgba(245,166,35,.45));}
+  .session-tabs{padding:5px;background:rgba(0,0,0,.18);border:1px solid var(--hairline);border-radius:11px;overflow-x:auto;}
+  .session-tabs button{border-color:transparent;transition:background .18s,color .18s,box-shadow .18s;white-space:nowrap;}.session-tabs button.active{background:linear-gradient(135deg,rgba(245,166,35,.2),rgba(255,92,92,.08));border-color:rgba(245,166,35,.45);box-shadow:0 5px 16px rgba(245,166,35,.09);}
+  .btn-amber{background:linear-gradient(135deg,#ffc451,var(--amber));box-shadow:0 7px 18px rgba(245,166,35,.17);transition:transform .15s ease,box-shadow .15s ease;}.btn-amber:hover{box-shadow:0 11px 24px rgba(245,166,35,.28);}
+  .setting-row{transition:background .18s ease,padding .18s ease;}.setting-row:hover{background:rgba(255,255,255,.02);padding-left:8px;padding-right:8px;}
+  .chat-grid{border:0;border-radius:12px;box-shadow:0 18px 46px rgba(0,0,0,.28);min-height:520px;background:#111b21;}
+  .chat-list{max-height:560px;border-right:1px solid #2a3942;scrollbar-width:thin;scrollbar-color:#3b4a54 #111b21;}
+  .chat-list-head{height:58px;display:flex;align-items:center;gap:12px;padding:9px 15px;background:#202c33;position:sticky;top:0;z-index:3;}
+  .chat-list-head .chat-avatar{width:38px;height:38px;background:linear-gradient(135deg,#6e7d86,#3d4c55);color:#d8e0e4;}.chat-list-head strong{font:16px var(--sans);font-weight:600;flex:1;}.wa-head-actions{display:flex;gap:12px;color:#aebac1;}.wa-head-actions button,.compose-icon{border:0;background:transparent;color:#aebac1;width:28px;height:28px;display:grid;place-items:center;cursor:pointer;font-size:17px;}.wa-head-actions button:hover,.compose-icon:hover{color:#e9edef;}
+  .chat-search{padding:8px 12px 9px;background:#111b21;top:58px;border-bottom:1px solid #1e2b32;}.chat-search input{height:34px;background:#202c33;color:#d1d7db;padding:8px 12px 8px 38px;font-size:12px;}.chat-search input::placeholder{color:#8696a0;}.chat-search i{left:25px;top:18px;color:#8696a0;}
+  .chat-item{gap:12px;padding:11px 13px;background:#111b21;border-bottom:1px solid #222d34;min-height:65px;transition:background .12s ease;}.chat-item:hover{background:#182229;}.chat-item.selected{background:#2a3942;border-left:0;padding-left:13px;}.chat-avatar{width:46px;height:46px;background:linear-gradient(145deg,#60727c,#34454f);color:#e4ebee;font-size:16px;}.chat-name{font-size:13px;line-height:1.25;}.chat-name time{color:#8696a0;font:10px var(--sans);}.chat-preview{font-size:11px;color:#8696a0;margin-top:4px;}.chat-side{align-self:stretch;display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;min-width:24px;}.unread-badge{min-width:18px;height:18px;padding:0 5px;border-radius:10px;background:#25d366;color:#111b21;font:700 10px var(--sans);display:grid;place-items:center;}
+  .thread{max-height:560px;background:#0b141a;}.thread-head{height:58px;padding:8px 16px;gap:11px;background:#202c33;border:0;box-shadow:0 1px 2px rgba(0,0,0,.12);}.thread-head .chat-avatar{width:40px;height:40px;font-size:15px;}.thread-contact{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px;}.thread-head strong{font-size:13px;line-height:1.2;}.thread-subtitle{font:11px var(--sans);color:#8696a0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.thread-actions{display:flex;gap:10px;}
+  .thread-body{padding:12px 7%;gap:3px;background-color:#0b141a;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='none' stroke='%2335424a' stroke-width='1' opacity='.18'%3E%3Cpath d='M16 26c8-12 20-4 17 8-2 8-15 12-19 3M65 14l7 7-7 7-7-7zM119 28c0-7 14-7 14 0s-14 7-14 0zM146 70l9-5 5 9-9 5zM33 92c6-9 17-6 17 3s-11 12-17 3zM88 102c0-8 11-12 16-4l-8 13zM130 143c9-9 18 1 12 10M20 151h16m-8-8v16M77 159l10-10m0 10-10-10M164 14h8m-4-4v8'/%3E%3C/g%3E%3C/svg%3E");}
+  .date-separator{align-self:center;margin:8px 0 6px;padding:5px 12px;border-radius:8px;background:#182229;color:#d1d7db;box-shadow:0 1px .5px rgba(0,0,0,.22);font:10px var(--sans);text-transform:uppercase;}
+  .message{max-width:72%;padding:6px 8px 5px;border-radius:8px;font-size:12px;line-height:1.45;box-shadow:0 1px .5px rgba(0,0,0,.28);margin-top:2px;}.message.me{background:#005c4b;border-top-right-radius:8px;}.message.them{background:#202c33;border-top-left-radius:8px;}.message.run-start{margin-top:8px;}.message.me.run-end:after,.message.them.run-end:after{content:'';position:absolute;top:0;width:0;height:0;border-top:8px solid currentColor;}.message.me.run-end:after{right:-7px;border-right:0;border-left:8px solid transparent;color:#005c4b;}.message.them.run-end:after{left:-7px;border-left:0;border-right:8px solid transparent;color:#202c33;}.message time{display:inline-block;float:right;margin:5px 0 -1px 8px;font-size:9px;color:#aebac1;line-height:15px;}.message.me time i{font-size:11px;color:#53bdeb;margin-left:3px;}.message .sender-label{font-size:10px;color:#f5a623;}.bubble-actions{clear:both;}
+  .thread-compose{align-items:center;gap:5px;padding:7px 10px;background:#202c33;border:0;}.thread-compose input{height:38px;background:#2a3942;border:0;border-radius:20px;padding:10px 14px;color:#e9edef;font:12px var(--sans);outline:none;}.thread-compose input::placeholder{color:#8696a0;}.thread-compose .btn-amber{width:32px;height:32px;padding:0;border-radius:50%;display:grid;place-items:center;background:transparent;color:#aebac1;box-shadow:none;font-size:16px;}.thread-compose .btn-amber:hover{color:#e9edef;transform:none;}.thread-compose .btn-amber span{display:none;}
+  @media(max-width:640px){.chat-grid{grid-template-columns:1fr;min-height:unset;}.chat-list{max-height:250px;border-right:0;border-bottom:1px solid #2a3942;}.thread{min-height:430px;}.thread-body{padding-left:10px;padding-right:10px;}.message{max-width:84%;}.chat-list-head{position:relative;}.chat-search{top:0;}.session-tabs{margin-left:-2px;margin-right:-2px;}}
+
+
+  .set-note{font:12px/1.6 var(--sans);color:var(--text-dim);margin-bottom:12px;max-width:760px}.set-note b{color:var(--text);font-family:var(--mono);font-weight:500}
+  .set-list{display:flex;flex-direction:column;gap:8px}
+  .set-row{display:flex;align-items:center;gap:12px;padding:11px 13px;border:1px solid var(--hairline);border-radius:10px;background:var(--panel-raised);flex-wrap:wrap}
+  .set-row strong{font:600 13px var(--sans);min-width:130px}.set-row .set-meta{flex:1;font:11px var(--mono);color:var(--text-dim);min-width:180px}
+  .cdb-chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font:500 11px var(--mono);border:1px solid var(--hairline);white-space:nowrap}
+  .cdb-chip.good{background:var(--green-dim);color:var(--green);border-color:rgba(53,212,136,.3)}
+  .cdb-chip.warn{background:var(--amber-dim);color:var(--amber);border-color:rgba(245,166,35,.3)}
+  .cdb-chip.bad{background:var(--red-dim);color:var(--red);border-color:rgba(255,92,92,.3)}
+  .chatdb-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;padding:10px 12px;border:1px solid var(--hairline);border-radius:10px;background:var(--panel-raised);font:12px var(--sans)}
+  .chatdb-bar .grow{flex:1;color:var(--text-dim);min-width:160px}
+  .chat-off{margin:auto;max-width:330px;padding:34px 20px;text-align:center;color:var(--text-dim);font:13px/1.6 var(--sans)}
+  .chat-off i{font-size:30px;color:var(--red);margin-bottom:12px;display:block}.chat-off strong{display:block;color:var(--text);font-size:15px;margin-bottom:6px}
+  .chat-off button{margin-top:14px}
+  .blade-chip{margin-top:6px}.cdb-box input.admin-input+input.admin-input{margin-top:8px}
+  .cdb-state{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .cdb-back{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:50;padding:16px;}
+  .cdb-back.show{display:flex;}
+  .cdb-box{width:100%;max-width:520px;background:var(--panel);border:1px solid var(--hairline);border-radius:12px;padding:20px;max-height:90vh;overflow:auto;}
+  .cdb-box h3{margin:0 0 4px;font-size:16px;}
+  .cdb-sub{color:var(--text-dim);font-size:12px;margin-bottom:14px;}
+  .cdb-stat{background:#080a0d;border:1px solid var(--hairline);border-radius:9px;padding:12px;font:12px var(--mono);line-height:1.7;margin-bottom:14px;white-space:pre-wrap;word-break:break-all;}
+  .cdb-stat .bad{color:var(--red);} .cdb-stat .good{color:var(--green);}
+  .cdb-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+  .cdb-note{color:var(--text-dim);font-size:11px;margin-top:12px;line-height:1.5;}
+</style>
+<style id="ui2">
+/* ===== UI v2: refreshed console + faithful WhatsApp chat ===== */
+:root{--bg:#07090c;--panel:#0f1318;--panel-raised:#151a21;--hairline:#222a33;--green:#25d366;--green-dim:rgba(37,211,102,.12);--amber:#f5b335;--wa-bg:#0b141a;--wa-panel:#202c33;--wa-out:#005c4b;--wa-in:#202c33;--wa-text:#e9edef;--wa-dim:#8696a0;}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(1000px 520px at 0% -10%,rgba(37,211,102,.07),transparent 60%),radial-gradient(800px 500px at 100% 0%,rgba(245,179,53,.06),transparent 62%),var(--bg);letter-spacing:.005em}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#2c3742;border-radius:8px}::-webkit-scrollbar-track{background:transparent}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.panel,.gate-card,.gauge,.nav-tile,.blade{border-radius:16px;backdrop-filter:blur(6px)}
+.blade{border-radius:14px}.blade.online .led{box-shadow:0 0 0 4px rgba(37,211,102,.14),0 0 14px var(--green)}
+.gauge:after{background:linear-gradient(90deg,transparent,var(--green),var(--amber),transparent)}
+.gauge-bar-fill{background:linear-gradient(90deg,var(--green),var(--amber));border-radius:99px}
+.btn-amber{background:linear-gradient(135deg,#34e47c,#1faa57);color:#04170b;font-weight:600;border-radius:10px;box-shadow:0 8px 20px rgba(37,211,102,.2)}
+.btn-ghost,.icon-btn,.admin-input,.admin-select{border-radius:10px}
+.icon-btn.chatdb:hover{color:var(--green);border-color:var(--green)}
+.session-tabs{border-radius:14px;position:sticky;top:0;z-index:5;backdrop-filter:blur(10px);background:rgba(10,13,17,.75)}
+.session-tabs button.active{background:var(--green-dim);border-color:rgba(37,211,102,.5);color:#d9ffe9;box-shadow:0 6px 18px rgba(37,211,102,.12)}
+.panel,.blade,.channel-card{animation:rise .35s ease both}@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* chat shell: fills the screen like WhatsApp Web */
+.chat-grid{height:calc(100vh - 250px);min-height:540px;max-height:880px;grid-template-columns:minmax(300px,32%) 1fr;grid-template-rows:minmax(0,1fr);border-radius:14px;background:var(--wa-bg);border:1px solid #1d2a31;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.chat-list,.thread{max-height:none;height:100%;min-height:0}
+.chat-list{display:flex;flex-direction:column;background:#111b21;overflow:hidden}
+#chatList{flex:1;overflow-y:auto;min-height:0}
+.chat-list-head,.thread-head,.thread-compose{background:var(--wa-panel)}
+.chat-list-head{position:relative;top:auto}.chat-search{position:relative;top:auto}
+.chat-search input{border-radius:10px;height:36px;font-size:13px;background:#202c33}
+.chat-filter{font-size:12px;padding:6px 12px;border-color:transparent;background:#202c33}
+.chat-filter.active{background:#103629;color:#25d366;border-color:transparent}
+.chat-item{padding:0 14px;min-height:72px;gap:14px;border-bottom:0;position:relative;background:transparent}
+.chat-item:after{content:'';position:absolute;left:74px;right:0;bottom:0;border-bottom:1px solid #202c33}
+.chat-item:hover{background:#202c33}.chat-item.selected{background:#2a3942}
+.chat-avatar{width:49px;height:49px;font-size:18px;flex:none}
+.chat-name{font-size:15px;font-weight:400;color:var(--wa-text)}.chat-name time{font-size:11.5px}
+.chat-preview{font-size:13.5px;color:var(--wa-dim);margin-top:3px}
+.unread-badge{background:#25d366}
+.thread{display:flex;flex-direction:column;background:var(--wa-bg)}
+.thread-head{height:60px;flex:none}.thread-head strong{font-size:16px;font-weight:400;color:var(--wa-text)}.thread-subtitle{font-size:12.5px}
+.wa-back{display:none!important}
+.thread-body{flex:1;min-height:0;padding:14px 8%;gap:2px;scrollbar-width:thin}
+.date-separator{background:#182229;color:#8696a0;font-size:12px;text-transform:none;padding:6px 12px;border-radius:8px;margin:10px 0}
+.message{font-size:14.2px;line-height:1.4;max-width:min(65%,560px);padding:6px 8px 6px 9px;border-radius:8px;white-space:pre-wrap;word-break:break-word;color:var(--wa-text)}
+.message.me{background:var(--wa-out)}.message.them{background:var(--wa-in)}
+.message.me.run-start,.message.them.run-start{margin-top:10px}
+.message.me.run-start{border-top-right-radius:0}.message.them.run-start{border-top-left-radius:0}
+.message.me.run-end:after,.message.them.run-end:after{display:none}
+.message.me.run-start:before,.message.them.run-start:before{content:'';position:absolute;top:0;width:8px;height:13px;background:inherit}
+.message.me.run-start:before{right:-8px;clip-path:polygon(0 0,0 100%,100% 0)}
+.message.them.run-start:before{left:-8px;clip-path:polygon(100% 0,100% 100%,0 0)}
+.message time{font-size:11px;color:rgba(233,237,239,.6);margin:6px 0 -3px 10px;white-space:nowrap}
+.message.me time i{color:#53bdeb;font-size:12px}
+.message .sender-label{font:500 12.8px var(--sans)}
+.message-media{border-radius:6px;max-width:min(330px,100%)}
+.thread-compose{padding:10px 14px;gap:8px;flex:none}.thread-compose input#composeText{height:42px;border-radius:10px;font-size:15px;background:#2a3942}
+.thread-compose .btn-amber{width:42px;height:42px;background:#00a884;color:#fff;box-shadow:none;border-radius:50%}
+.thread-compose .btn-amber:hover{background:#06cf9c}
+.compose-icon{font-size:20px}
+@media(max-width:760px){
+ .chat-grid{grid-template-columns:1fr;height:calc(100vh - 190px);min-height:480px}
+ .chat-grid .thread{display:none}.chat-grid.chat-open .thread{display:flex}.chat-grid.chat-open .chat-list{display:none}
+ .wa-back{display:grid!important}.thread-body{padding:12px 10px}.message{max-width:86%}
+}
+
+
+.ref-tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.ref-tools .admin-input{flex:1;min-width:180px;width:auto}.ref-tools .admin-select{flex:0 0 210px;width:210px}
+.ref-card{border:1px solid var(--hairline);border-radius:12px;background:var(--panel-raised);overflow:hidden}
+.ref-row{display:flex;align-items:center;gap:12px;padding:12px 14px;flex-wrap:wrap}
+.ref-rank{width:26px;font:600 13px var(--mono);color:var(--text-dim)}
+.ref-num{font:600 14px var(--mono);min-width:150px}.ref-num small{display:block;font:500 11px var(--sans);color:var(--text-dim);margin-top:2px}
+.ref-chips{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.ref-actions{display:flex;gap:8px}
+.ref-detail{border-top:1px solid var(--hairline);padding:10px 14px;background:#10141b}
+.ref-sub{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #1c222c;font:12px var(--sans);flex-wrap:wrap}
+.ref-sub:last-child{border-bottom:0}.ref-sub .n{font:500 12px var(--mono);min-width:140px}.ref-sub .d{flex:1;color:var(--text-dim)}
+/* ===== Professional redesign layer (overrides earlier rules) ===== */
+:root{
+  --bg:#0d1014;--panel:#141820;--panel-raised:#1a1f29;--hairline:#252b36;
+  --text:#e8ecf2;--text-dim:#8b95a5;
+  --amber:#6ea0ff;--amber-dim:rgba(110,160,255,.14);
+  --green:#3ecf8e;--green-dim:rgba(62,207,142,.12);--red:#f26d6d;--red-dim:rgba(242,109,109,.12);
+  --display:'Inter',sans-serif;--mono:'IBM Plex Mono',monospace;
+  --wa-bg:#0f1319;--wa-panel:#171c25;--wa-text:#e8ecf2;--wa-dim:#8b95a5;--r:10px;
+}
+body{background:var(--bg);font-feature-settings:'tnum' 1,'cv11' 1;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 48px}
+header{position:sticky;top:0;z-index:20;background:rgba(13,16,20,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--hairline);padding:14px 0;margin-bottom:22px}
+.brand-text{font:600 15px var(--sans);letter-spacing:0}.brand-text small{display:block;font:500 11px var(--sans);color:var(--text-dim);letter-spacing:0;margin-top:1px}
+.link-dot{font:500 12px var(--sans);color:var(--green);letter-spacing:0}
+.panel,.gauge,.nav-tile,.gate-card{background:var(--panel);border:1px solid var(--hairline);border-radius:12px;box-shadow:none}
+.gauge:hover,.nav-tile:hover{transform:none;border-color:#3a4456}
+.nav-row{gap:14px;margin-bottom:18px}
+.nav-tile{padding:18px 20px;display:flex;flex-direction:column;gap:3px;font:13px var(--sans)}
+.nav-tile strong{font:600 15px var(--sans)}.nav-tile i{width:34px;height:34px;display:grid;place-items:center;border-radius:9px;background:var(--amber-dim);margin:0 0 10px;font-size:16px}
+.cluster{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:18px}
+.gauge{padding:16px 18px}.gauge-label{font:500 12px var(--sans);color:var(--text-dim);letter-spacing:0;text-transform:none}
+.gauge-value{font:600 30px/1.2 var(--sans);margin-top:6px;letter-spacing:-.5px}
+.panel{margin-bottom:18px;overflow:hidden}
+.panel-head{padding:14px 18px;border-bottom:1px solid var(--hairline);background:transparent}
+.panel-title{font:600 14px var(--sans);letter-spacing:0;text-transform:none;display:flex;align-items:center;gap:9px}.panel-title i{color:var(--amber);font-size:14px}
+.panel-body{padding:18px}
+.btn-amber{background:var(--amber);color:#0b1220;border:0;border-radius:8px;padding:9px 15px;font:600 13px var(--sans);cursor:pointer;transition:filter .12s}
+.btn-amber:hover{filter:brightness(1.1)}.btn-amber:disabled{opacity:.55;cursor:default}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--hairline);border-radius:8px;padding:8px 13px;font:500 13px var(--sans);cursor:pointer}
+.btn-ghost:hover{background:var(--panel-raised);border-color:#3a4456}
+.admin-input,.admin-select,input,select{background:#10141b;border:1px solid var(--hairline);border-radius:8px;color:var(--text);font:13px var(--sans)}
+.admin-input,.admin-select{padding:10px 12px}
+.admin-input:focus,.admin-select:focus,input:focus,select:focus{outline:2px solid rgba(110,160,255,.45);outline-offset:1px;border-color:var(--amber)}
+.blade{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--hairline);border-radius:11px;background:var(--panel-raised);margin-bottom:10px;box-shadow:none;transition:border-color .12s}
+.blade:hover{border-color:#3a4456}
+.blade-name{font:600 14px var(--sans)}.blade-id{font:500 11px var(--mono);color:var(--text-dim);background:#10141b;border:1px solid var(--hairline);border-radius:6px;padding:1px 7px;margin-left:6px}
+.blade-url{font:12px var(--mono);color:var(--text-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.led{width:9px;height:9px;border-radius:50%;flex:none;background:var(--text-dim);box-shadow:none}.blade.online .led{background:var(--green);box-shadow:0 0 0 4px var(--green-dim)}.blade.offline .led{background:var(--red);box-shadow:0 0 0 4px var(--red-dim)}
+.gauge-bar{height:6px;border-radius:99px;background:#10141b;overflow:hidden}.gauge-bar-fill{height:100%;border-radius:99px;background:var(--amber)}
+.gauge-bar-label{font:12px var(--sans);color:var(--text-dim);margin-bottom:6px}
+.icon-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--hairline);background:transparent;color:var(--text-dim);cursor:pointer}
+.icon-btn:hover{background:#10141b;color:var(--text)}.icon-btn.danger:hover{color:var(--red);border-color:rgba(242,109,109,.4)}.icon-btn.is-active{color:var(--green)}
+.view-head{margin-bottom:18px}.view-head h2{font:600 20px var(--sans);letter-spacing:-.2px}
+.session-tabs{display:flex;gap:2px;border-bottom:1px solid var(--hairline);margin-bottom:16px}
+.session-tabs button{background:none;border:0;border-bottom:2px solid transparent;color:var(--text-dim);padding:10px 16px;font:500 13px var(--sans);cursor:pointer;margin-bottom:-1px;border-radius:0}
+.session-tabs button:hover{color:var(--text)}.session-tabs button.active{color:var(--text);border-bottom-color:var(--amber);background:none}
+.terminal{background:#0a0d12;border:1px solid var(--hairline);border-radius:10px;font:12px/1.6 var(--mono)}
+/* chat */
+.chat-grid{background:#0f1319;border:1px solid var(--hairline);border-radius:12px;box-shadow:none;overflow:hidden}
+.chat-list,.chat-search,.chat-filters,.chat-item{background:#12171f}
+.chat-list{border-right:1px solid var(--hairline)}
+.chat-list-head,.thread-head,.thread-compose{background:#171c25;border-bottom:1px solid var(--hairline)}
+.thread-compose{border-bottom:0;border-top:1px solid var(--hairline)}
+.chat-search input,.thread-compose input{background:#0f1319;border:1px solid var(--hairline);border-radius:9px;color:var(--text)}
+.chat-filter{background:transparent;border:1px solid var(--hairline);color:var(--text-dim);border-radius:999px;font:500 12px var(--sans)}
+.chat-filter.active{background:var(--amber-dim);border-color:rgba(110,160,255,.5);color:var(--amber)}
+.chat-item:after{border-bottom:1px solid #1c222c}.chat-item:hover{background:#171c25}.chat-item.selected{background:#1d2430;box-shadow:inset 3px 0 var(--amber)}
+.chat-avatar{background:#232a36;color:var(--text-dim)}
+.chat-name{font:500 14px var(--sans)}.chat-preview{font:13px var(--sans);color:var(--text-dim)}
+.thread,.thread-body{background:#0f1319;background-image:none}
+.message{border-radius:12px;box-shadow:none;font:13.5px/1.5 var(--sans);padding:8px 11px 6px}
+.message.me{background:#264a8a;color:#f2f6ff}.message.them{background:#1d2430;color:var(--text)}
+.message time{font:11px var(--sans);opacity:.65}
+.date-separator{background:#171c25;color:var(--text-dim);border:1px solid var(--hairline);border-radius:999px;font:500 11px var(--sans);padding:3px 12px;align-self:center;margin:10px 0}
+.unread-badge{background:var(--amber);color:#0b1220;font-weight:600}
+.chatdb-bar,.set-row{background:var(--panel-raised);border-radius:10px}
+.cdb-box{background:var(--panel);border-radius:14px;padding:24px}.cdb-box h3{font:600 17px var(--sans)}
+.cdb-stat{background:#0a0d12;border-radius:10px;font:12px/1.7 var(--mono)}
+.toast{border-radius:10px;font:500 13px var(--sans)}
+.gate{background:var(--bg)}.gate-card{padding:32px;max-width:380px}.gate-card h2{font:600 20px var(--sans)}
+@media(max-width:700px){.wrap{padding:0 12px 32px}.blade{flex-wrap:wrap}.panel-body{padding:14px}.gauge-value{font-size:26px}.session-tabs{overflow-x:auto}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <i class="fas fa-lock"></i>
+    <h2>Ops Console Access</h2>
+    <p>Enter the admin key to continue</p>
+    <input type="password" id="keyInput" placeholder="ADMIN_KEY" autocomplete="off"/>
+    <button id="unlockBtn">Unlock</button>
+    <div class="gate-err" id="gateErr"></div>
+  </div>
 </div>
-<div class="bar hide" id="gBarW"><i id="gBar"></i></div>
-<div class="row hide" id="gStopW" style="margin-top:8px"><button id="gStop" class="btn ghost small">Stop</button></div>
-<div id="gMsg" class="notice" style="white-space:pre-wrap"></div></div>
 
-<div class="card"><h2>CHAT EXPLORER</h2>
- <div class="muted">Select a connected session, then Inbox, Groups, or Channels. Open any chat to view media, polls, profiles, and recent cached messages.</div>
- <div class="row" style="margin-top:10px"><select id="cSession"><option value="">Select session...</option></select><button id="cRefresh" class="btn ghost small">Refresh list</button></div>
- <div class="row" style="margin-top:10px"><button id="cInbox" class="btn ghost">Inbox</button><button id="cGroups" class="btn ghost">Groups</button><button id="cChannels" class="btn ghost">Channels</button></div>
- <div class="row" style="margin-top:10px"><input id="cNewNumber" class="input" placeholder="New chat number with country code" inputmode="numeric"><button id="cNew" class="btn">New Chat</button></div>
- <div id="cList" class="gl"><div class="gi muted">Select a session and category.</div></div>
- <div id="cMessages" class="chatbox"><div class="muted">Open a chat from the list.</div></div>
- <div id="cTools" class="row" style="margin-top:8px"><input id="cLookup" class="input" placeholder="User number / profile lookup" inputmode="numeric"><button id="cProfile" class="btn ghost small">Profile</button><button id="cMembers" class="btn ghost small hide">Members</button><button id="cBlock" class="btn ghost small hide">Block</button></div><div id="cProfileOut"></div><div class="row" style="margin-top:10px"><textarea id="cText" class="input" placeholder="Write a message..."></textarea><button id="cSend" class="btn green">Send message</button></div>
- <div id="cMsg" class="notice" style="white-space:pre-wrap"></div>
+<div class="wrap hidden" id="console">
+  <header>
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 26 26" fill="none">
+          <circle cx="13" cy="13" r="12" stroke="#f5a623" stroke-width="1.4" opacity="0.35"/>
+          <circle cx="13" cy="13" r="7.5" stroke="#f5a623" stroke-width="1.4" opacity="0.6"/>
+          <circle cx="13" cy="13" r="2.6" fill="#f5a623"/>
+        </svg>
+      </div>
+      <div class="brand-text">XENORIZE MD<small>OPS CONSOLE</small></div>
+    </div>
+    <div class="header-actions">
+      <div class="link-dot"><span class="pip"></span>CONNECTED</div>
+      <button class="btn-ghost" id="lockBtn"><i class="fas fa-lock"></i> Lock</button>
+    </div>
+  </header>
+
+  <div class="nav-row"><button class="nav-tile" id="whatsappBtn"><i class="fab fa-whatsapp"></i><strong>WhatsApp</strong><br><span style="font-size:11px;color:var(--text-dim)">Sessions, settings, commands &amp; chat history</span></button><button class="nav-tile" id="settingsBtn"><i class="fas fa-sliders"></i><strong>Settings</strong><br><span style="font-size:11px;color:var(--text-dim)">Fleet passcode, chat databases, admin session</span></button><button class="nav-tile" id="referralsBtn"><i class="fas fa-gift"></i><strong>Referrals</strong><br><span style="font-size:11px;color:var(--text-dim)">Who invited how many, reward due, block</span></button></div>
+
+  <div class="cluster">
+    <div class="gauge">
+      <div class="gauge-label">Servers online</div>
+      <div class="gauge-value green" id="statServers">—</div>
+    </div>
+    <div class="gauge">
+      <div class="gauge-label">Active sessions</div>
+      <div class="gauge-value amber" id="statSessions">—</div>
+    </div>
+    <div class="gauge">
+      <div class="gauge-label">Capacity</div>
+      <div class="gauge-value" id="statCapacity">—</div>
+    </div>
+    <div class="gauge">
+      <div class="gauge-label">Paired users</div>
+      <div class="gauge-value" id="statPaired">—</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title"><i class="fas fa-tower-broadcast"></i> Broadcast plugin update</div>
+      <button class="btn-amber" id="broadcastBtn"><i class="fas fa-rotate"></i> Update all servers</button>
+    </div>
+    <div class="panel-body">
+      <p style="font-family:var(--mono); font-size:11px; color:var(--text-dim);">Tells every active server to pull the latest plugins and hot-reload — no redeploy needed.</p>
+      <div class="broadcast-results" id="broadcastResults"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title"><i class="fas fa-link-slash"></i> Unlink a number</div>
+    </div>
+    <div class="panel-body">
+      <p style="font-family:var(--mono); font-size:11px; color:var(--text-dim); margin-bottom:12px;">Properly logs the device out through WhatsApp itself (not just deleting local data), so the phone's Linked Devices list clears automatically. Use this before re-pairing a number that's acting up.</p>
+      <form class="add-form show" id="unlinkForm" style="grid-template-columns:1fr 1.4fr auto;">
+        <select id="unlinkServer" required></select>
+        <input id="unlinkNumber" placeholder="WhatsApp number, e.g. 2349xxxxxxxxx" required/>
+        <button class="btn-amber" type="submit"><i class="fas fa-link-slash"></i> Unlink</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title"><i class="fas fa-server"></i> Server rack</div>
+      <button class="btn-ghost" id="addToggleBtn" style="border-color:var(--hairline); color:var(--text);"><i class="fas fa-plus"></i> Register server</button>
+    </div>
+    <div class="panel-body">
+      <div class="rack" id="rack">
+        <div class="rack-empty">Loading servers…</div>
+      </div>
+      <form class="add-form" id="addForm">
+        <input id="addId" placeholder="serverId (e.g. server2)" required/>
+        <input id="addName" placeholder="Display name"/>
+        <input id="addUrl" placeholder="https://xenorize-bot-xxxx.herokuapp.com" required/>
+        <button class="btn-amber" type="submit"><i class="fas fa-check"></i> Add</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="referralsView" class="hidden">
+    <div class="view-head"><button class="btn-ghost" id="refBackBtn"><i class="fas fa-arrow-left"></i> Console home</button><h2>Referrals</h2></div>
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title"><i class="fas fa-gift"></i> Referral list</div><button class="btn-ghost" id="refRefresh"><i class="fas fa-rotate"></i> Refresh</button></div>
+      <div class="panel-body">
+        <div class="ref-tools"><input class="admin-input" id="refSearch" placeholder="Search number…" inputmode="numeric"><select class="admin-select" id="refSort"><option value="eligible">Sort: eligible</option><option value="confirmed">Sort: confirmed</option><option value="total">Sort: total</option><option value="connected">Sort: connected now</option><option value="recent">Sort: newest</option></select></div>
+        <p class="set-note" id="refNote">Loading…</p>
+        <div id="refList" class="set-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="settingsView" class="hidden">
+    <div class="view-head"><button class="btn-ghost" id="setBackBtn"><i class="fas fa-arrow-left"></i> Console home</button><h2>Settings</h2></div>
+  <div class="panel">
+    <div class="panel-head"><div class="panel-title"><i class="fas fa-key"></i> Fleet command passcode</div></div>
+    <div class="panel-body">
+      <p style="font-family:var(--mono);font-size:11px;color:var(--text-dim);">Set or rotate the secret used by fleet-wide bot commands. It is stored centrally as a salted hash, so all bot servers use the same passcode without per-server updates. Global owners and active premium users are still required either way.</p>
+      <label style="display:flex;align-items:center;gap:9px;margin:0 0 12px;font:12px var(--mono);color:var(--text);">
+        <input id="fleetPasscodeRequired" type="checkbox" checked style="width:auto;accent-color:var(--amber);"/>
+        Require passcode for fleet commands
+      </label>
+      <form id="fleetPasscodeForm" style="display:flex;gap:8px;max-width:620px;">
+        <input id="fleetPasscodeInput" type="password" class="admin-input" autocomplete="new-password" placeholder="New passcode (12–128 characters)" required style="flex:1;"/>
+        <button class="btn-amber" type="submit"><i class="fas fa-floppy-disk"></i> Save / rotate</button>
+      </form>
+      <div id="fleetPasscodeStatus" style="font:11px var(--mono);color:var(--text-dim);margin-top:9px;">Checking status…</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><div class="panel-title"><i class="fas fa-database"></i> Chat storage per server</div><button class="btn-ghost" id="setCdbRefresh"><i class="fas fa-rotate"></i> Refresh</button></div>
+    <div class="panel-body">
+      <p class="set-note">Session data always stays in each server's Heroku <b>MONGODB_URI</b> (fixed). Chat history can go to a separate Mongo that you add or remove here. No chat DB added = chats are not saved or shown. If an added chat DB is full or offline, chats pause while the bot keeps running, and resume by themselves when it recovers.</p>
+      <div id="setCdbList" class="set-list"><div class="rack-empty">Loading…</div></div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><div class="panel-title"><i class="fas fa-user-shield"></i> Admin session</div></div>
+    <div class="panel-body">
+      <p class="set-note">The admin key is kept only for this browser tab and is sent as a header, never in the URL. Closing the tab locks the console.</p>
+      <button class="btn-ghost" id="setLockBtn"><i class="fas fa-lock"></i> Lock console now</button>
+    </div>
+  </div>
+  </div>
+
+  <div id="whatsappView" class="hidden">
+    <div class="view-head"><button class="btn-ghost" id="waBackBtn"><i class="fas fa-arrow-left"></i> Console home</button><h2 id="waTitle">WhatsApp servers</h2></div>
+    <div id="findNumberBox" style="display:flex;gap:8px;margin-bottom:16px;">
+      <input id="findNumberInput" class="admin-input" placeholder="Don't remember which server? Search a number, e.g. 923xxxxxxxxx" style="flex:1;"/>
+      <button class="btn-ghost" id="findNumberBtn"><i class="fas fa-search"></i> Find</button>
+    </div>
+    <div id="findNumberResult"></div>
+    <div id="waServers" class="rack"></div>
+    <div id="waSessions" class="rack hidden"></div>
+    <div id="waSession" class="hidden">
+      <div class="session-tabs"><button data-tab="settings" class="active">Settings</button><button data-tab="command">Console</button><button data-tab="chats">Chats</button><button data-tab="channels">Channels</button></div>
+      <div id="tabSettings" class="panel"><div class="panel-body" id="settingsBody">Loading settings…</div></div>
+      <div id="tabCommand" class="panel hidden"><div class="panel-body"><div id="commandLog" class="terminal">Xenorize MD command console ready.</div><select id="commandChat" class="admin-select" style="margin-bottom:8px"></select><form id="commandForm" style="display:flex;gap:8px"><input id="commandInput" class="admin-input" placeholder=".ping" autocomplete="off"><button class="btn-amber" type="submit">Run</button></form></div></div>
+      <div id="tabChats" class="panel hidden"><div class="panel-body"><div class="chatdb-bar" id="chatDbBar"><span id="chatDbChip"></span><span class="grow" id="chatDbHint"></span><button class="btn-ghost" id="chatDbManage"><i class="fas fa-database"></i> Chat database</button></div><div class="control-mode"><span>Full Control Mode <small style="color:var(--text-dim)">real WhatsApp sends</small></span><button id="fullControlToggle" class="btn-ghost"><span id="fullControlPill" class="mode-pill">OFF</span></button></div><div class="chat-grid"><div class="chat-list"><div class="chat-list-head"><div class="chat-avatar"><i class="fas fa-user"></i></div><strong>Chats</strong><div class="wa-head-actions"><button type="button" title="New chat" aria-label="New chat"><i class="fas fa-message"></i></button><button type="button" title="Menu" aria-label="Menu"><i class="fas fa-ellipsis-vertical"></i></button></div></div><div class="chat-search"><i class="fas fa-search"></i><input id="chatSearch" placeholder="Search chats"/></div><div class="chat-filters" id="chatFilters"><button class="chat-filter active" data-chat-filter="all">All</button><button class="chat-filter" data-chat-filter="group">Groups</button><button class="chat-filter" data-chat-filter="channel">Channels</button><button class="chat-filter" data-chat-filter="dm">Direct messages</button></div><div id="chatList"></div></div><div class="thread"><div class="thread-head" id="threadHead" style="display:none;"></div><div id="messageThread" class="thread-body"><div class="rack-empty">Choose a chat</div></div><form id="threadCompose" class="thread-compose hidden"><button type="button" class="compose-icon" title="Emoji" aria-label="Emoji"><i class="far fa-face-smile"></i></button><button type="button" class="compose-icon" id="attachBtn" title="Attach image, video, voice note, or document" aria-label="Attach"><i class="fas fa-paperclip"></i></button><input type="file" id="mediaInput" class="hidden" accept="image/*,video/*,audio/*,.pdf,.doc,.docx"/><input id="composeText" placeholder="Type a message" autocomplete="off"/><button class="btn-amber" id="composeSubmit" title="Voice message" aria-label="Voice message"><i class="fas fa-microphone"></i><span>Send</span></button></form></div></div></div></div>
+      <div id="tabChannels" class="panel hidden"><div class="panel-body"><form class="channel-add" id="channelAddForm"><input class="admin-input" id="channelInput" placeholder="Channel link, invite code, or @newsletter JID"><button class="btn-amber">Add known channel</button></form><div id="channelList" class="channel-grid"><div class="rack-empty">Open Channels to load tracked channels</div></div></div></div>
+    </div>
+  </div>
 </div>
 
-<div class="card"><h2>PREMIUM</h2><div class="row"><input id="pNum" class="input" placeholder="923001234567" inputmode="numeric"><input id="pDays" class="input" placeholder="Days (empty = forever)" inputmode="numeric"></div>
-<div class="row" style="margin-top:10px"><button id="pAdd" class="btn">Give premium</button><button id="pDel" class="btn ghost">Remove premium</button></div><div id="pMsg" class="notice"></div></div>
-
-<div class="card"><h2>REFERRAL LOOKUP</h2><div class="row"><input id="rNum" class="input" placeholder="923001234567" inputmode="numeric"><button id="rGo" class="btn">Check</button></div><div id="rOut" class="notice" style="color:var(--text);white-space:pre-wrap"></div></div>
+<div class="cdb-back" id="cdbBack"><div class="cdb-box">
+  <h3><i class="fas fa-database"></i> Chat database</h3>
+  <div class="cdb-sub" id="cdbServer"></div>
+  <div class="cdb-stat" id="cdbStat">Loading…</div>
+  <input class="admin-input" id="cdbUri" type="password" autocomplete="off" spellcheck="false" placeholder="mongodb+srv://user:pass@cluster/dbname  (chat database)">
+  <input class="admin-input" id="cdbLimit" type="number" min="0" placeholder="Pause chats at this size in MB (optional, e.g. 480 for a 512 MB free cluster)">
+  <div class="cdb-row">
+    <button class="btn-amber" id="cdbSave">Test &amp; add</button>
+    <button class="btn-ghost" id="cdbMain" style="color:var(--red)">Remove chat DB</button>
+    <button class="btn-ghost" id="cdbClose">Close</button>
+  </div>
+  <div class="cdb-note"><b>Session DB</b> = this server's Heroku <b>MONGODB_URI</b> (not changed here). <b>Chat DB</b> = only chat messages and saved chat media. Without a chat DB, chats are not saved or shown. If the chat DB gets full or goes offline, chats pause (hidden and not saved) but the bot keeps running, and resume automatically once there is space again. Adding a new URI starts fresh; older chats stay in the old database. The URI is stored encrypted.</div>
 </div></div>
-<script>
-const $=s=>document.querySelector(s);let key='';try{key=sessionStorage.getItem('xenoAdminKey')||''}catch(_){}
-const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const textOf=v=>typeof v==='string'?v:(v&&typeof v==='object'?(v.message||v.error||JSON.stringify(v)) : String(v??''));
-const msg=(id,t,bad)=>{const e=$(id);e.textContent=textOf(t);e.className='notice'+(bad?' error':'')};
-const api=async (p,o={})=>{const r=await fetch(p,{...o,headers:{Accept:'application/json','x-admin-key':key,...(o.headers||{})}});const d=await r.json().catch(()=>({error:'Invalid response'}));if(!r.ok)throw Error(textOf(d.error||d.message||'Request failed'));return d};
-const digits=v=>String(v||'').replace(/\D/g,'');
-async function load(){try{const d=await api('/api/admin/overview');$('#sSaved').textContent=d.saved;$('#sOn').textContent=d.connected;$('#sGoal').textContent=d.goal;fillScope(d.users);
- $('#rows').innerHTML=d.users.length?d.users.map(u=>`<tr><td>+${esc(u.number)}</td><td class="${u.connected?'on':'off'}">${u.connected?'● online':'○ offline'}</td><td>${u.referrals}/${d.goal}</td><td>${u.premium?'<span class="pill prem">PREMIUM</span>':'-'}</td><td><button class="btn ghost" data-dc="${esc(u.number)}">Disconnect</button></td></tr>`).join(''):'<tr><td colspan="5" class="muted">No sessions yet</td></tr>';
- document.querySelectorAll('[data-dc]').forEach(b=>b.onclick=async()=>{if(!confirm('Disconnect and delete the session of +'+b.dataset.dc+'?'))return;try{const r=await api('/api/admin/disconnect?number='+b.dataset.dc);msg('#sessMsg',r.message);load()}catch(e){msg('#sessMsg',textOf(e.message),true)}});
- }catch(e){if(/key/i.test(e.message)){logout()}else msg('#sessMsg',textOf(e.message),true)}}
-function open_(){$('#login').classList.add('hide');$('#panel').classList.remove('hide');load()}
-function logout(){try{sessionStorage.removeItem('xenoAdminKey')}catch(_){}key='';$('#panel').classList.add('hide');$('#login').classList.remove('hide');msg('#loginMsg','Wrong or missing admin key',true)}
-$('#loginBtn').onclick=async()=>{key=$('#key').value.trim();try{await api('/api/admin/overview');try{sessionStorage.setItem('xenoAdminKey',key)}catch(_){}open_()}catch(e){msg('#loginMsg',textOf(e.message),true)}};
-$('#key').onkeydown=e=>e.key==='Enter'&&$('#loginBtn').click();
-$('#refresh').onclick=load;$('#logout').onclick=()=>{try{sessionStorage.removeItem('xenoAdminKey')}catch(_){}location.reload()};
-$('#reconnect').onclick=async()=>{try{msg('#sessMsg',(await api('/api/admin/reconnect-all')).message);setTimeout(load,4000)}catch(e){msg('#sessMsg',textOf(e.message),true)}};
-const prem=async a=>{const n=digits($('#pNum').value);if(n.length<7)return msg('#pMsg','Enter a valid number',true);try{msg('#pMsg',(await api(`/api/admin/premium?number=${n}&action=${a}&days=${digits($('#pDays').value)||0}`)).message);load()}catch(e){msg('#pMsg',e.message,true)}};
-$('#pAdd').onclick=()=>prem('add');$('#pDel').onclick=()=>prem('remove');
-$('#rGo').onclick=async()=>{const n=digits($('#rNum').value);if(n.length<7)return msg('#rOut','Enter a valid number',true);try{const d=await api('/api/admin/ref?number='+n);$('#rOut').className='notice';$('#rOut').textContent=`+${n}${d.code?' ['+d.code+']':''}: ${d.count}/${d.goal} linked (${d.left} left)\n`+(d.list&&d.list.length?d.list.map(x=>'• +'+x).join('\n'):'No linked numbers yet')}catch(e){msg('#rOut',e.message,true)}};
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i><span>Done</span></div>
 
-/* ===== SWGC / SWGCALL ===== */
-let online=[],groupsBy={},sel={},jobTimer=null,curJob=null;
-const API=(p,o={})=>fetch(p,{...o,headers:{'x-admin-key':key,Accept:'application/json',...(o.headers||{})}}).then(async r=>{const d=await r.json().catch(()=>({error:'Invalid response'}));if(!r.ok)throw Error(d.error||'Request failed');return d});
-let chatTimer=null;
-function fillScope(users){online=users.filter(u=>u.connected).map(u=>u.number);const cur=$('#gScope').value;
- $('#gScope').innerHTML=`<option value="all">All sessions (${online.length} online)</option>`+online.map(n=>`<option value="${esc(n)}">+${esc(n)}</option>`).join('');
- if(cur&&[...$('#gScope').options].some(o=>o.value===cur))$('#gScope').value=cur;fillChatSessions()}
-const scopeNums=()=>$('#gScope').value==='all'?online.slice():[$('#gScope').value];
-$('#gFile').onchange=()=>{const f=$('#gFile').files[0];$('#gFileInfo').textContent=f?`${f.name} · ${(f.size/1048576).toFixed(1)} MB`+(f.size>64*1048576?' (too big, max 64 MB)':''):''};
-function selCount(){return Object.values(sel).reduce((a,s)=>a+s.size,0)}
-function renderGroups(){const q=$('#gSearch').value.trim().toLowerCase();let h='';
- for(const n of Object.keys(groupsBy)){const gs=groupsBy[n];const shown=gs.filter(g=>!q||g.subject.toLowerCase().includes(q));if(!shown.length)continue;
-  const all=shown.every(g=>sel[n].has(g.id));
-  h+=`<div class="gh"><span>+${esc(n)} <span class="muted">(${sel[n].size}/${gs.length})</span></span><input type="checkbox" data-sn="${esc(n)}" ${all?'checked':''} title="Select all in this session"></div>`;
-  h+=shown.map(g=>`<label class="gi"><input type="checkbox" data-n="${esc(n)}" data-j="${esc(g.id)}" ${sel[n].has(g.id)?'checked':''}><span class="n">${esc(g.subject)}</span><span class="muted">${g.size||''} 👥</span></label>`).join('')}
- $('#gList').innerHTML=h||'<div class="gi muted">No groups</div>';
- $('#gPost').textContent=`Post on selected groups (${selCount()})`;
- $('#gList').querySelectorAll('[data-j]').forEach(c=>c.onchange=()=>{c.checked?sel[c.dataset.n].add(c.dataset.j):sel[c.dataset.n].delete(c.dataset.j);renderGroups()});
- $('#gList').querySelectorAll('[data-sn]').forEach(c=>c.onchange=()=>{const n=c.dataset.sn;groupsBy[n].filter(g=>!q||g.subject.toLowerCase().includes(q)).forEach(g=>c.checked?sel[n].add(g.id):sel[n].delete(g.id));renderGroups()})}
-let chatKind='',chatTargetJid='',chatSession='',chatList=[];
-function fillChatSessions(){const cur=$('#cSession').value;$('#cSession').innerHTML='<option value="">Select session...</option>'+online.map(n=>`<option value="${esc(n)}">+${esc(n)}</option>`).join('');if(cur&&online.includes(cur))$('#cSession').value=cur}
-async function loadChatList(kind){chatKind=kind;chatSession=$('#cSession').value;if(!chatSession)return msg('#cMsg','Select a connected session first',true);$('#cList').innerHTML='<div class="gi muted">Loading chats...</div>';try{const d=await API(`/api/admin/chat/list?number=${encodeURIComponent(chatSession)}&kind=${kind}`);chatList=d.chats||[];$('#cList').innerHTML=chatList.length?chatList.map((c,i)=>`<div class="chatrow" data-ci="${i}"><b>${esc(c.title)}</b><small>${esc(c.lastText)} · ${c.count} cached</small></div>`).join(''):'<div class="gi muted">No cached chats in this category.</div>';$('#cList').querySelectorAll('[data-ci]').forEach(e=>e.onclick=()=>openChat(chatList[Number(e.dataset.ci)],e));msg('#cMsg',`${chatList.length} ${kind==='groups'?'group':'inbox'} chats found.`)}catch(e){msg('#cMsg',e.message,true);$('#cList').innerHTML='<div class="gi muted">Could not load chats.</div>'}}
-function openChat(c,el){chatTargetJid=c.jid;document.querySelectorAll('.chatrow').forEach(x=>x.classList.remove('active'));el?.classList.add('active');$('#cMembers').classList.toggle('hide',!c.jid.endsWith('@g.us'));$('#cBlock').classList.toggle('hide',!c.jid.endsWith('@s.whatsapp.net'));$('#cProfileOut').innerHTML='';loadChats()}
-function chatTarget(){return chatSession&&chatTargetJid?{number:chatSession,jid:chatTargetJid}:null}
-function mediaHtml(m){if(!['image','video','audio','sticker','document'].includes(m.type))return '';const u=`/api/admin/chat/media?number=${encodeURIComponent(chatSession)}&jid=${encodeURIComponent(chatTargetJid)}&id=${encodeURIComponent(m.id)}`;if(m.type==='image'||m.type==='sticker')return `<img src="${u}" alt="${m.type}" loading="lazy">`;if(m.type==='video')return `<video src="${u}" controls preload="metadata"></video>`;if(m.type==='audio')return `<audio src="${u}" controls></audio>`;return `<a href="${u}" target="_blank" download>Download document</a>`}
-function pollHtml(m){if(!m.poll)return '';return `<div class="actions">${m.poll.options.map((o,i)=>`<button class="btn ghost small" data-vote="${i+1}" data-mid="${esc(m.id)}">${i+1}. ${esc(o)}</button>`).join('')}</div>`}
-function renderChats(messages){const box=$('#cMessages');box.innerHTML=messages.length?messages.map(m=>`<div class="bubble ${m.fromMe?'me':''}"><span class="meta">${m.fromMe?'Bot':esc(m.name||m.sender||'Member')} · ${m.timestamp?new Date(m.timestamp*1000).toLocaleString():''}</span>${m.text?esc(m.text):''}${mediaHtml(m)}${pollHtml(m)}</div>`).join(''):'<div class="muted">No cached messages for this chat.</div>';box.querySelectorAll('[data-vote]').forEach(b=>b.onclick=async()=>{try{const d=await API('/api/admin/chat/poll/vote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({number:chatSession,jid:chatTargetJid,id:b.dataset.mid,option:b.dataset.vote})});msg('#cMsg',d.message)}catch(e){msg('#cMsg',e.message,true)}});box.scrollTop=box.scrollHeight}
-async function loadChats(){const t=chatTarget();if(!t){renderChats([]);return}try{const d=await API(`/api/admin/chat/history?number=${encodeURIComponent(t.number)}&jid=${encodeURIComponent(t.jid)}&limit=100`);renderChats(d.messages||[]);msg('#cMsg',`Showing ${d.messages.length} recent cached messages.`)}catch(e){msg('#cMsg',e.message,true)}}
-$('#cSession').onchange=()=>{chatSession=$('#cSession').value;chatTargetJid='';$('#cList').innerHTML='<div class="gi muted">Choose Inbox or Groups.</div>';renderChats([])};
-$('#cInbox').onclick=()=>loadChatList('inbox');$('#cGroups').onclick=()=>loadChatList('groups');$('#cChannels').onclick=()=>loadChatList('channels');
-$('#cNew').onclick=()=>{const n=digits($('#cNewNumber').value);chatSession=$('#cSession').value;if(!chatSession)return msg('#cMsg','Select a connected session first',true);if(n.length<7||n.length>15)return msg('#cMsg','Enter a valid number with country code',true);chatKind='new';chatTargetJid=n+'@s.whatsapp.net';$('#cList').innerHTML=`<div class="chatrow active"><b>+${esc(n)}</b><small>New inbox chat</small></div>`;renderChats([]);msg('#cMsg',`New chat ready: +${n}. Write a message below.`)};
-$('#cRefresh').onclick=()=>chatKind?loadChatList(chatKind):msg('#cMsg','Choose Inbox or Groups first',true);
-$('#cProfile').onclick=async()=>{const raw=digits($('#cLookup').value)||chatTargetJid.split('@')[0];if(!raw)return msg('#cMsg','Enter a user number first',true);try{const d=await API(`/api/admin/profile?number=${encodeURIComponent(chatSession)}&phone=${raw}`);$('#cProfileOut').innerHTML=`<div class="profile">${d.picture?`<img src="${esc(d.picture)}">`:''}<b>+${esc(d.number)}</b><div class="muted">${esc(d.name||'WhatsApp user')} · ${d.exists===false?'not on WhatsApp':'available'}</div></div>`}catch(e){msg('#cMsg',e.message,true)}};
-$('#cBlock').onclick=async()=>{if(!chatTargetJid)return;const action=$('#cBlock').textContent==='Block'?'block':'unblock';try{const d=await API('/api/admin/block',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({number:chatSession,jid:chatTargetJid,action})});msg('#cMsg',d.message);$('#cBlock').textContent=action==='block'?'Unblock':'Block'}catch(e){msg('#cMsg',e.message,true)}};
-$('#cMembers').onclick=async()=>{try{const d=await API(`/api/admin/group/members?number=${encodeURIComponent(chatSession)}&jid=${encodeURIComponent(chatTargetJid)}`);$('#cProfileOut').innerHTML=`<div class="profile"><b>${esc(d.subject)}</b><div class="muted">${d.members.length} members</div>${d.members.map(x=>`<div>+${esc(x.number)} ${x.admin?`<span class="pill">${esc(x.admin)}</span>`:''}</div>`).join('')}</div>`}catch(e){msg('#cMsg',e.message,true)}};
-$('#cSend').onclick=async()=>{const t=chatTarget(),text=$('#cText').value.trim();if(!t)return msg('#cMsg','Open a chat first',true);if(!text)return msg('#cMsg','Write a message first',true);$('#cSend').disabled=true;try{const d=await API('/api/admin/chat/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({number:t.number,jid:t.jid,text})});$('#cText').value='';msg('#cMsg',d.message);setTimeout(loadChats,500)}catch(e){msg('#cMsg',e.message,true)}finally{$('#cSend').disabled=false}};
-$('#gSearch').oninput=renderGroups;
-$('#gSelAll').onclick=()=>{const q=$('#gSearch').value.trim().toLowerCase();for(const n in groupsBy)groupsBy[n].filter(g=>!q||g.subject.toLowerCase().includes(q)).forEach(g=>sel[n].add(g.id));renderGroups()};
-$('#gSelNone').onclick=()=>{for(const n in sel)sel[n].clear();renderGroups()};
-function checkContent(){const f=$('#gFile').files[0];if(!f&&!$('#gText').value.trim()){msg('#gMsg','Pehle message/link likho ya image/video chuno',true);return false}
- if(f&&f.size>64*1048576){msg('#gMsg','File bohat bari hai (max 64 MB)',true);return false}
- if(f&&!/^(image|video|audio)\//.test(f.type)){msg('#gMsg','Sirf image / video / audio',true);return false}
- if(!online.length){msg('#gMsg','Koi session online nahi',true);return false}return true}
-$('#gSwgc').onclick=async()=>{if(!checkContent())return;const nums=scopeNums();msg('#gMsg','Groups load ho rahe hain...');$('#gSwgc').disabled=true;groupsBy={};sel={};
- const errs=[];await Promise.all(nums.map(async n=>{try{const d=await API('/api/admin/swgc/groups?number='+n);groupsBy[n]=d.groups;sel[n]=new Set()}catch(e){errs.push(`+${n}: ${e.message}`)}}));
- $('#gSwgc').disabled=false;msg('#gMsg',errs.join('\n'),!!errs.length);
- if(!Object.keys(groupsBy).length)return;$('#gSearch').value='';$('#gPick').classList.remove('hide');renderGroups()};
-async function uploadFile(f){const id=[...crypto.getRandomValues(new Uint8Array(12))].map(b=>b.toString(16).padStart(2,'0')).join('');const SZ=1048576,n=Math.ceil(f.size/SZ);
- for(let i=0;i<n;i++){msg('#gMsg',`Upload ${i+1}/${n}...`);await API(`/api/admin/swgc/chunk?id=${id}&i=${i}`,{method:'POST',headers:{'Content-Type':'application/octet-stream'},body:f.slice(i*SZ,(i+1)*SZ)})}
- return{id,chunks:n,mime:f.type}}
-async function begin(targets){if(!checkContent())return;const f=$('#gFile').files[0];['#gSwgc','#gAll','#gPost'].forEach(s=>$(s).disabled=true);
- try{const upload=f?await uploadFile(f):null;msg('#gMsg','Start ho raha hai...');
-  const d=await API('/api/admin/swgc/start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({targets,text:$('#gText').value.trim(),color:$('#gColor').value,font:$('#gFont').value,upload})});
-  curJob=d.job;$('#gBarW').classList.remove('hide');$('#gStopW').classList.remove('hide');$('#gBar').style.width='0';poll()}
- catch(e){msg('#gMsg',e.message,true);['#gSwgc','#gAll','#gPost'].forEach(s=>$(s).disabled=false)}}
-async function poll(){clearTimeout(jobTimer);try{const j=await API('/api/admin/swgc/job?id='+curJob);const t=j.total||1,dn=j.done+j.failed;$('#gBar').style.width=Math.min(100,dn/t*100)+'%';
-  const fin=j.state!=='running';msg('#gMsg',`${fin?({done:'Done ✅',stopped:'Stopped ⏹',error:'Failed ❌'})[j.state]:'Posting...'} ${j.done}/${j.total||'?'} groups`+(j.failed?` · ${j.failed} failed`:'')+(j.current&&!fin?` · +${j.current}`:'')+(j.errors.length?'\n'+j.errors.join('\n'):''),fin&&(j.state==='error'||j.failed>0));
-  if(fin){['#gSwgc','#gAll','#gPost'].forEach(s=>$(s).disabled=false);$('#gStopW').classList.add('hide');return}}catch(e){msg('#gMsg',e.message,true)}
- jobTimer=setTimeout(poll,1500)}
-$('#gStop').onclick=()=>curJob&&API('/api/admin/swgc/stop?id='+curJob).catch(()=>{});
-$('#gPost').onclick=()=>{const targets=Object.keys(sel).filter(n=>sel[n].size).map(n=>({number:n,jids:[...sel[n]]}));if(!targets.length)return msg('#gMsg','Kam az kam ek group select karo',true);begin(targets)};
-$('#gAll').onclick=()=>{if(!checkContent())return;const nums=scopeNums();if(!confirm(`Status ${nums.length} session ke SAB groups par lagega. Continue?`))return;begin(nums.map(n=>({number:n,jids:null})))};
-if(key)open_();
-</script></body></html>
+<script>
+  const gate = document.getElementById('gate');
+  const consoleEl = document.getElementById('console');
+  const keyInput = document.getElementById('keyInput');
+  const unlockBtn = document.getElementById('unlockBtn');
+  const gateErr = document.getElementById('gateErr');
+  const lockBtn = document.getElementById('lockBtn');
+  const toast = document.getElementById('toast');
+
+  const rack = document.getElementById('rack');
+  const addToggleBtn = document.getElementById('addToggleBtn');
+  const addForm = document.getElementById('addForm');
+  const broadcastBtn = document.getElementById('broadcastBtn');
+  const broadcastResults = document.getElementById('broadcastResults');
+  const fleetPasscodeForm = document.getElementById('fleetPasscodeForm');
+  const fleetPasscodeInput = document.getElementById('fleetPasscodeInput');
+  const fleetPasscodeStatus = document.getElementById('fleetPasscodeStatus');
+  const fleetPasscodeRequired = document.getElementById('fleetPasscodeRequired');
+  const unlinkForm = document.getElementById('unlinkForm');
+  const unlinkServer = document.getElementById('unlinkServer');
+  const unlinkNumber = document.getElementById('unlinkNumber');
+
+  let adminKey = sessionStorage.getItem('st_admin_key') || '';
+
+  function showToast(message, isError=false){
+    toast.querySelector('i').className = isError ? 'fas fa-exclamation-circle' : 'fas fa-check-circle';
+    toast.querySelector('span').textContent = message;
+    toast.className = `toast ${isError ? 'error' : ''} show`;
+    setTimeout(()=>toast.classList.remove('show'), 2800);
+  }
+
+  function authHeaders(){
+    return { headers: { 'x-api-key': adminKey } };
+  }
+
+  async function verifyKey(key){
+    // servers list is public, so use updatex's auth-gated GET (harmless empty run if no servers)
+    // simplest reliable check: call PATCH-less endpoint that requires the key.
+    try{
+      await axios.get('/api/updatex', { headers:{ 'x-api-key': key } });
+      return true;
+    }catch(err){
+      if(err.response && err.response.status === 401) return false;
+      // any other error (e.g. no servers, timeout) still means the key itself was accepted
+      return true;
+    }
+  }
+
+  async function unlock(){
+    const key = keyInput.value.trim();
+    if(!key){ gateErr.textContent = 'Enter a key'; return; }
+    unlockBtn.disabled = true;
+    unlockBtn.textContent = 'Checking…';
+    const ok = await verifyKey(key);
+    unlockBtn.disabled = false;
+    unlockBtn.textContent = 'Unlock';
+    if(!ok){
+      gateErr.textContent = 'Invalid admin key';
+      return;
+    }
+    adminKey = key;
+    sessionStorage.setItem('st_admin_key', key);
+    enterConsole();
+  }
+
+  function enterConsole(){
+    gate.classList.add('hidden');
+    consoleEl.classList.remove('hidden');
+    loadAll();
+    loadFleetPasscodeStatus();
+    setInterval(loadAll, 20000);
+  }
+
+  async function loadFleetPasscodeStatus(){
+    fleetPasscodeStatus.textContent='Checking status…';
+    try{
+      const r=await axios.get('/api/security/fleet-passcode',authHeaders());
+      fleetPasscodeRequired.checked=r.data.passcodeRequired !== false;
+      fleetPasscodeStatus.textContent=r.data.passcodeRequired === false
+        ? `Passcode not required · global owners and active premium users can run fleet commands${r.data.configured?' · a passcode is saved':''}`
+        : r.data.configured
+          ? `Passcode required and configured${r.data.updatedAt?` · last changed ${new Date(r.data.updatedAt).toLocaleString()}`:''}`
+          : 'Passcode requirement is ON, but no passcode is configured; fleet commands are disabled until one is saved.';
+    }catch(err){fleetPasscodeStatus.textContent=err.response?.data?.error||'Could not read passcode status';}
+  }
+  fleetPasscodeRequired.addEventListener('change',async()=>{
+    const desired=fleetPasscodeRequired.checked;
+    fleetPasscodeRequired.disabled=true;
+    try{
+      await axios.put('/api/security/fleet-passcode/requirement',{required:desired},authHeaders());
+      showToast(desired?'Fleet passcode requirement enabled':'Fleet passcode requirement disabled');
+      await loadFleetPasscodeStatus();
+    }catch(err){
+      fleetPasscodeRequired.checked=!desired;
+      showToast(err.response?.data?.error||'Could not update passcode setting',true);
+    }finally{fleetPasscodeRequired.disabled=false;}
+  });
+  fleetPasscodeForm.addEventListener('submit',async e=>{
+    e.preventDefault();
+    const passcode=fleetPasscodeInput.value;
+    try{
+      await axios.put('/api/security/fleet-passcode',{passcode},authHeaders());
+      fleetPasscodeInput.value='';
+      showToast('Fleet passcode saved');
+      await loadFleetPasscodeStatus();
+    }catch(err){showToast(err.response?.data?.error||'Could not save fleet passcode',true);}
+  });
+
+  unlockBtn.addEventListener('click', unlock);
+  keyInput.addEventListener('keydown', e=>{ if(e.key==='Enter') unlock(); });
+
+  lockBtn.addEventListener('click', ()=>{
+    sessionStorage.removeItem('st_admin_key');
+    adminKey = '';
+    consoleEl.classList.add('hidden');
+    gate.classList.remove('hidden');
+    keyInput.value = '';
+    gateErr.textContent = '';
+  });
+
+  async function loadAll(){
+    await Promise.all([loadStats(), loadServers()]);
+  }
+  function countTo(id,value){
+    const el=document.getElementById(id), target=Number(value);
+    if(!Number.isFinite(target)){el.textContent=value;return;}
+    const start=Number(el.dataset.count||0), started=performance.now(), duration=420;
+    const tick=now=>{const progress=Math.min(1,(now-started)/duration);el.textContent=Math.round(start+(target-start)*(1-Math.pow(1-progress,3)));if(progress<1)requestAnimationFrame(tick);else el.dataset.count=target;};
+    requestAnimationFrame(tick);
+  }
+
+  async function loadStats(){
+    try{
+      const res = await axios.get('/api/status');
+      const d = res.data;
+      document.getElementById('statServers').textContent = `${d.healthyServers}/${d.totalServers}`;
+      countTo('statSessions',d.totalActiveUsers);
+      countTo('statCapacity',d.totalCapacity);
+      countTo('statPaired',d.totalPairedUsers);
+    }catch(e){ /* keep dashes */ }
+  }
+
+  let servers = [];
+
+  async function loadServers(){
+    try{
+      const res = await axios.get('/api/servers?live=true');
+      servers = res.data.servers || [];
+    }catch(e){
+      try{
+        const res2 = await axios.get('/api/servers');
+        servers = res2.data.servers || [];
+      }catch(e2){ servers = []; }
+    }
+    renderRack();
+  }
+
+  function renderRack(){
+    if(!servers.length){
+      rack.innerHTML = '<div class="rack-empty">No servers registered yet — click "Register server" above</div>';
+      unlinkServer.innerHTML = '<option value="">No servers</option>';
+      return;
+    }
+    unlinkServer.innerHTML = servers.map(s => `<option value="${esc(s.id)}">${esc(s.name || s.id)}</option>`).join('');
+    rack.innerHTML = '';
+    servers.forEach(s=>{
+      const active = s.active !== false;
+      const healthy = s.healthy !== false;
+      const count = s.count ?? s.lastKnownCount ?? 0;
+      const limit = s.limit ?? s.lastKnownLimit ?? 50;
+      const pct = Math.min(100, Math.round((count/Math.max(limit,1))*100));
+      const el = document.createElement('div');
+      el.className = `blade ${healthy ? 'online' : 'offline'}`;
+      el.innerHTML = `
+        <span class="led"></span>
+        <div class="blade-info">
+          <div class="blade-name">${esc(s.name || s.id)} <span class="blade-id">${esc(s.id)}</span></div>
+          <div class="blade-url" title="${esc(s.url)}">${esc(s.url)}</div>
+        </div>
+        <div class="gauge-bar-wrap">
+          <div class="gauge-bar-label">${count}/${limit} sessions</div>
+          <div class="gauge-bar"><div class="gauge-bar-fill" style="width:${pct}%"></div></div>
+        </div>
+        <div class="blade-actions">
+          <button class="icon-btn toggle ${active ? 'is-active' : ''}" title="${active ? 'Active — click to disable' : 'Inactive — click to enable'}" data-id="${esc(s.id)}" data-active="${active}">
+            <i class="fas ${active ? 'fa-toggle-on' : 'fa-toggle-off'}"></i>
+          </button>
+          <button class="icon-btn chatdb" title="Chat database" data-id="${esc(s.id)}">
+            <i class="fas fa-database"></i>
+          </button>
+          <button class="icon-btn danger" title="Remove server" data-id="${esc(s.id)}">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      `;
+      el.querySelector('.toggle').addEventListener('click', (e)=> toggleServer(s.id, !active));
+      el.querySelector('.chatdb').addEventListener('click', ()=> openChatDb(s));
+      el.querySelector('.danger').addEventListener('click', (e)=> removeServer(s.id, s.name || s.id));
+      rack.appendChild(el);
+    });
+  }
+
+
+  // ---- Per-server chat database ----
+  let cdbServer = null;
+  const cdbApi = () => `/api/sessions/${encodeURIComponent(cdbServer.id)}/chatdb`;
+  function cdbChip(d){
+    if(!d) return '';
+    const sep=d.mode==='separate', st=d.state||'ok';
+    const cls=st==='off'?'warn':st!=='ok'?'bad':'good';
+    const txt=st==='off'?'No chat DB · chats off':st==='full'?'Chat DB full · chats paused':st==='down'?'Chat DB offline · chats paused':`Chat DB · ${d.dataSizeMB ?? '?'} MB`;
+    return `<span class="cdb-chip ${cls}"><i class="fas fa-database"></i>${esc(txt)}</span>`;
+  }
+  function renderCdbStat(d){
+    const sep=d.mode==='separate';
+    document.getElementById('cdbMain').style.display=sep?'':'none';
+    document.getElementById('cdbSave').textContent=sep?'Test & replace':'Test & add';
+    if(d.state==='off'){ document.getElementById('cdbStat').innerHTML=`<div class="cdb-state">${cdbChip(d)}</div>Session DB: Heroku MONGODB_URI (fixed)\nChat DB:    not set\n<span class="bad">Chats are not being saved or shown. Add a chat database below to start. The bot is running normally.</span>`; return; }
+    let html=`<div class="cdb-state">${cdbChip(d)}</div>Session DB: Heroku MONGODB_URI (fixed)\nChat DB:    ${esc(d.target||'-')}`;
+    if(d.ok) html+=`\nData:       ${d.dataSizeMB} MB  (storage ${d.storageSizeMB} MB, indexes ${d.indexSizeMB} MB)${d.limitMB?`\nLimit:      pauses at ${d.limitMB} MB`:''}\nMessages:   ${d.messages ?? '-'}`;
+    else html+=`\nStatus:     <span class="bad">unreachable - ${esc(d.error||'unknown error')}</span>`;
+    if(d.state&&d.state!=='ok') html+=`\n<span class="bad">Chats are paused${d.lastError?': '+esc(d.lastError):''}. Bot is running normally. Add a new chat DB or free up space. Chats resume automatically.</span>`;
+    document.getElementById('cdbStat').innerHTML=html;
+  }
+  async function refreshCdb(){
+    const st = document.getElementById('cdbStat');
+    st.textContent = 'Loading…';
+    try{ renderCdbStat((await axios.get(cdbApi(), authHeaders())).data.chatDb); }
+    catch(err){ st.innerHTML = `<span class="bad">${esc(err.response?.data?.error || 'Could not reach this server')}</span>`; }
+  }
+  function openChatDb(server){
+    cdbServer = server;
+    document.getElementById('cdbServer').textContent = `${server.name || server.id} (${server.id})`;
+    document.getElementById('cdbUri').value = ''; document.getElementById('cdbLimit').value = '';
+    document.getElementById('cdbBack').classList.add('show');
+    refreshCdb();
+  }
+  function afterCdbChange(){ if(selectedSession&&selectedServer&&cdbServer&&cdbServer.id===selectedServer.id) loadChats(); if(!waServers.classList.contains('hidden')) loadWhatsAppServers(); if(!settingsViewEl.classList.contains('hidden')) loadSettingsCdb(); }
+  async function fetchCdb(server){ try{ return (await axios.get(`/api/sessions/${encodeURIComponent(server.id)}/chatdb`, authHeaders())).data.chatDb; }catch(_){ return null; } }
+  async function loadSettingsCdb(){
+    const box=document.getElementById('setCdbList'); box.innerHTML='<div class="rack-empty">Loading…</div>';
+    if(!servers.length) await loadServers();
+    if(!servers.length){ box.innerHTML='<div class="rack-empty">No registered servers</div>'; return; }
+    box.innerHTML='';
+    for(const sv of servers){
+      const row=document.createElement('div'); row.className='set-row';
+      row.innerHTML=`<strong>${esc(sv.name||sv.id)}</strong><span class="set-meta">checking…</span><button class="btn-ghost"><i class="fas fa-database"></i> Manage</button>`;
+      row.querySelector('button').addEventListener('click',()=>openChatDb(sv)); box.appendChild(row);
+      fetchCdb(sv).then(d=>{ row.querySelector('.set-meta').innerHTML=d?`${cdbChip(d)} <span style="margin-left:6px">${esc(d.target||'')}</span>`:'<span class="cdb-chip bad">server unreachable</span>'; });
+    }
+  }
+  async function refreshChatBar(){
+    if(!selectedServer) return;
+    const d=await fetchCdb(selectedServer);
+    document.getElementById('chatDbChip').innerHTML=d?cdbChip(d):'<span class="cdb-chip bad">chat DB status unavailable</span>';
+    document.getElementById('chatDbHint').textContent=!d?'':d.state==='off'?'Chats are off. Add a chat database to save and view chats.':d.state&&d.state!=='ok'?'Chats are paused. The bot is running normally.':`Saving to ${d.target}`;
+  }
+  document.getElementById('chatDbManage').addEventListener('click',()=>selectedServer&&openChatDb(selectedServer));
+  document.getElementById('settingsBtn').addEventListener('click',()=>{ setView('settings'); loadFleetPasscodeStatus(); loadSettingsCdb(); });
+  document.getElementById('setBackBtn').addEventListener('click',()=>setView('home'));
+  document.getElementById('setCdbRefresh').addEventListener('click',loadSettingsCdb);
+  document.getElementById('setLockBtn').addEventListener('click',()=>lockBtn.click());
+  document.getElementById('cdbClose').addEventListener('click', ()=> document.getElementById('cdbBack').classList.remove('show'));
+  document.getElementById('cdbSave').addEventListener('click', async ()=>{
+    const uri = document.getElementById('cdbUri').value.trim();
+    if(!uri){ showToast('Paste the new Mongo URI first', true); return; }
+    const btn = document.getElementById('cdbSave'); const orig = btn.innerHTML;
+    btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Testing…';
+    try{
+      const d = (await axios.post(cdbApi(), { uri, limitMB: Number(document.getElementById('cdbLimit').value)||0 }, authHeaders())).data.chatDb;
+      document.getElementById('cdbUri').value = '';
+      renderCdbStat(d); showToast('Chat database saved'); afterCdbChange();
+    }catch(err){ showToast(err.response?.data?.error || 'Switch failed', true); }
+    finally{ btn.disabled = false; btn.innerHTML = orig; }
+  });
+  document.getElementById('cdbMain').addEventListener('click', async ()=>{
+    if(!confirm('Remove this chat database? Chats will stop being saved and shown until you add one again.')) return;
+    try{ renderCdbStat((await axios.delete(cdbApi(), authHeaders())).data.chatDb); showToast('Chat DB removed, chats are now off'); afterCdbChange(); }
+    catch(err){ showToast(err.response?.data?.error || 'Failed', true); }
+  });
+
+  async function toggleServer(id, nextActive){
+    try{
+      await axios.patch(`/api/servers/${id}`, { active: nextActive }, authHeaders());
+      showToast(`${id} ${nextActive ? 'enabled' : 'disabled'}`);
+      loadServers();
+    }catch(err){
+      showToast(err.response?.data?.error || 'Failed to update server', true);
+    }
+  }
+
+  async function removeServer(id, name){
+    if(!confirm(`Remove ${name} (${id}) from the registry? This cannot be undone.`)) return;
+    try{
+      await axios.delete(`/api/servers/${id}`, authHeaders());
+      showToast(`${id} removed`);
+      loadServers();
+    }catch(err){
+      showToast(err.response?.data?.error || 'Failed to remove server', true);
+    }
+  }
+
+  addToggleBtn.addEventListener('click', ()=> addForm.classList.toggle('show'));
+
+  unlinkForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const server = unlinkServer.value;
+    const number = unlinkNumber.value.trim().replace(/[^\d]/g,'');
+    if(!server || !number){ showToast('Pick a server and enter a number', true); return; }
+    const btn = unlinkForm.querySelector('button');
+    const original = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Unlinking…';
+    try{
+      const res = await axios.get('/api/unlink', { params:{ number, server }, headers:{ 'x-api-key': adminKey } });
+      showToast(`${number} unlinked (${res.data.method})`);
+      unlinkNumber.value = '';
+      loadServers();
+    }catch(err){
+      showToast(err.response?.data?.message || err.response?.data?.error || 'Unlink failed', true);
+    }finally{
+      btn.disabled = false;
+      btn.innerHTML = original;
+    }
+  });
+
+  addForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const serverId = document.getElementById('addId').value.trim();
+    const name = document.getElementById('addName').value.trim();
+    const url = document.getElementById('addUrl').value.trim();
+    if(!serverId || !url){ showToast('serverId and url are required', true); return; }
+    try{
+      await axios.post('/api/servers', { serverId, name, url }, authHeaders());
+      showToast(`${serverId} registered`);
+      document.getElementById('addId').value = '';
+      document.getElementById('addName').value = '';
+      document.getElementById('addUrl').value = '';
+      addForm.classList.remove('show');
+      loadServers();
+    }catch(err){
+      showToast(err.response?.data?.error || 'Failed to register server', true);
+    }
+  });
+
+  broadcastBtn.addEventListener('click', async ()=>{
+    broadcastBtn.disabled = true;
+    broadcastBtn.innerHTML = '<span class="spinner"></span> Broadcasting…';
+    broadcastResults.classList.remove('show');
+    try{
+      const res = await axios.get('/api/updatex', authHeaders());
+      const results = res.data.results || [];
+      broadcastResults.innerHTML = results.map(r => `
+        <div class="result-row ${r.status === 'success' ? 'ok' : 'fail'}">
+          <i class="fas ${r.status === 'success' ? 'fa-check' : 'fa-xmark'}"></i>
+          <span>${r.name || r.server}</span>
+          <span style="color:var(--text-dim); margin-left:auto;">${r.status === 'success' ? 'reloaded' : (r.error || 'failed')}</span>
+        </div>
+      `).join('');
+      broadcastResults.classList.add('show');
+      showToast(`Update sent — ${res.data.succeeded}/${res.data.total} succeeded`, res.data.failed > 0);
+    }catch(err){
+      showToast(err.response?.data?.error || 'Broadcast failed', true);
+    }finally{
+      broadcastBtn.disabled = false;
+      broadcastBtn.innerHTML = '<i class="fas fa-rotate"></i> Update all servers';
+    }
+  });
+
+  // ===== WhatsApp session administration =====
+  const waView = document.getElementById('whatsappView');
+  const waServers = document.getElementById('waServers');
+  const waSessions = document.getElementById('waSessions');
+  const waSession = document.getElementById('waSession');
+  const waTitle = document.getElementById('waTitle');
+  const settingsBody = document.getElementById('settingsBody');
+  const commandLog = document.getElementById('commandLog');
+  const commandChat = document.getElementById('commandChat');
+  const chatList = document.getElementById('chatList');
+  const messageThread = document.getElementById('messageThread');
+  const threadHead = document.getElementById('threadHead');
+  let selectedServer = null, selectedSession = null, knownChats = [], selectedChat = null;
+  const booleanSettings = ['botmax','antidelete','mentionReply','antiedit','antiviewonce','autoreact','autochreact','statusview','statuslike','recording','typing','afk','statusMentionDelete','antibadword','mentionsong'];
+  const label = s => s.replace(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase());
+  const esc = s => String(s ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  const sessionApi = (tail='') => `/api/sessions/${encodeURIComponent(selectedServer.id)}/${encodeURIComponent(selectedSession.number)}${tail}`;
+
+  const settingsViewEl = document.getElementById('settingsView');
+  const referralsViewEl = document.getElementById('referralsView');
+  function setView(v){
+    Array.from(consoleEl.children).forEach(el => { if(el !== consoleEl.firstElementChild && el !== waView && el !== settingsViewEl && el !== referralsViewEl) el.classList.toggle('hidden', v !== 'home'); });
+    waView.classList.toggle('hidden', v !== 'wa'); settingsViewEl.classList.toggle('hidden', v !== 'settings'); referralsViewEl.classList.toggle('hidden', v !== 'referrals');
+  }
+  function setWhatsAppView(open){ setView(open ? 'wa' : 'home'); }
+
+  document.getElementById('findNumberBtn').addEventListener('click', findNumber);
+  document.getElementById('findNumberInput').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); findNumber(); } });
+  async function findNumber(){
+    const q = document.getElementById('findNumberInput').value.trim();
+    const resultEl = document.getElementById('findNumberResult');
+    if(!q){ resultEl.innerHTML=''; return; }
+    resultEl.innerHTML = '<div class="rack-empty">Searching every server…</div>';
+    try{
+      const r = await axios.get('/api/paired', {...authHeaders(), params:{ number: q }});
+      const matches = r.data.users || [];
+      if(!matches.length){ resultEl.innerHTML = '<div class="rack-empty">No paired number matches that</div>'; return; }
+      if(!servers.length) await loadServers();
+      resultEl.innerHTML='';
+      matches.forEach(match=>{
+        const server = servers.find(s=>s.id===match.server) || { id: match.server, name: match.server };
+        const el=document.createElement('button'); el.className=`blade ${match.status==='connected'?'online':'offline'}`; el.style.cssText='text-align:left;color:var(--text);cursor:pointer;margin-bottom:8px;';
+        el.innerHTML=`<span class="led"></span><div class="blade-info"><div class="blade-name">${esc(match.number)} <span class="blade-id">${esc(match.status)}</span></div><div class="blade-url">Found on ${esc(server.name || server.id)}</div></div><i class="fas fa-chevron-right" style="color:var(--amber)"></i>`;
+        el.addEventListener('click', async ()=>{
+          resultEl.innerHTML = '<div class="rack-empty">Opening…</div>';
+          await loadSessions(server);
+          try{
+            const res = await axios.get(`/api/sessions/${encodeURIComponent(server.id)}`, authHeaders());
+            const session = (res.data.sessions || []).find(s => s.number === match.number);
+            if(session) await openSession(session);
+          }catch(err){}
+          resultEl.innerHTML='';
+        });
+        resultEl.appendChild(el);
+      });
+    }catch(err){ resultEl.innerHTML = `<div class="rack-empty">${esc(err.response?.data?.error || 'Search failed')}</div>`; }
+  }
+
+  document.getElementById('whatsappBtn').addEventListener('click', async ()=>{
+    setWhatsAppView(true); selectedServer=null; selectedSession=null; waSession.classList.add('hidden'); waSessions.classList.add('hidden'); waTitle.textContent='WhatsApp servers';
+    await loadWhatsAppServers();
+  });
+  document.getElementById('waBackBtn').addEventListener('click', ()=> setWhatsAppView(false));
+
+  async function loadWhatsAppServers(){
+    waServers.innerHTML='<div class="rack-empty">Loading registered servers…</div>';
+    if(!servers.length) await loadServers();
+    waServers.innerHTML='';
+    (servers || []).forEach(server => {
+      const el=document.createElement('button'); el.className='blade'; el.style.cssText='text-align:left;color:var(--text);cursor:pointer';
+      el.innerHTML=`<span class="led"></span><div class="blade-info"><div class="blade-name">${esc(server.name || server.id)} <span class="blade-id">${esc(server.id)}</span></div><div class="blade-url">Open live paired sessions</div><div class="blade-chip" data-chip>checking chat DB…</div></div><i class="fas fa-chevron-right" style="color:var(--amber)"></i>`;
+      fetchCdb(server).then(d=>{ el.querySelector('[data-chip]').innerHTML=d?cdbChip(d):''; });
+      el.addEventListener('click',()=>loadSessions(server)); waServers.appendChild(el);
+    });
+    if(!servers.length) waServers.innerHTML='<div class="rack-empty">No registered servers</div>';
+  }
+
+  async function loadSessions(server){
+    selectedServer=server; waTitle.textContent=`${server.name || server.id} — sessions`; waServers.classList.add('hidden'); waSessions.classList.remove('hidden'); waSessions.innerHTML='<div class="rack-empty">Loading live sessions…</div>';
+    try{
+      const res=await axios.get(`/api/sessions/${encodeURIComponent(server.id)}`, authHeaders());
+      const list=res.data.sessions || []; waSessions.innerHTML='';
+      list.forEach(session=>{
+        const el=document.createElement('button'); el.className=`blade ${session.status==='connected'?'online':'offline'}`; el.style.cssText='text-align:left;color:var(--text);cursor:pointer';
+        el.innerHTML=`<span class="led"></span><div class="blade-info"><div class="blade-name">${esc(session.number)} <span class="blade-id">${esc(session.status)}</span></div><div class="blade-url">${esc(session.user?.name || session.user?.id || 'Offline history remains available')}</div></div><i class="fas fa-chevron-right" style="color:var(--amber)"></i>`;
+        el.addEventListener('click',()=>openSession(session)); waSessions.appendChild(el);
+      });
+      if(!list.length) waSessions.innerHTML='<div class="rack-empty">No paired sessions found on this server</div>';
+    }catch(err){waSessions.innerHTML=`<div class="rack-empty">${esc(err.response?.data?.error || 'Failed to load sessions')}</div>`;}
+  }
+
+  async function openSession(session){
+    selectedSession=session; selectedChat=null; waSessions.classList.add('hidden'); waSession.classList.remove('hidden'); waTitle.textContent=`${session.number} — ${selectedServer.name || selectedServer.id}`;
+    commandChat.innerHTML=`<option value="${esc(session.number)}@s.whatsapp.net">Self chat (${esc(session.number)})</option>`;
+    await Promise.all([loadSettings(), loadChats()]);
+  }
+
+  async function loadSettings(){
+    settingsBody.textContent='Loading settings…';
+    try{
+      const cfg=(await axios.get(sessionApi('/settings'),authHeaders())).data.settings || {};
+      settingsBody.innerHTML='';
+      booleanSettings.forEach(key=>{
+        const row=document.createElement('label'); row.className='setting-row'; row.innerHTML=`<span>${esc(label(key))}</span><input class="switch" type="checkbox" ${cfg[key]?'checked':''}>`;
+        row.querySelector('input').addEventListener('change',e=>saveSetting(key,e.target.checked)); settingsBody.appendChild(row);
+      });
+      const mode=document.createElement('div'); mode.className='setting-row'; mode.innerHTML=`<span>Mode</span><select class="admin-select" style="width:auto"><option value="public">Public</option><option value="private">Private</option></select>`; mode.querySelector('select').value=cfg.mode || 'public'; mode.querySelector('select').addEventListener('change',e=>saveSetting('mode',e.target.value)); settingsBody.appendChild(mode);
+      const reason=document.createElement('div'); reason.className='setting-row'; reason.innerHTML=`<span>AFK reason</span><input class="admin-input" style="width:60%" value="${esc(cfg.afkReason || '')}" placeholder="Optional reason">`; reason.querySelector('input').addEventListener('change',e=>saveSetting('afkReason',e.target.value)); settingsBody.appendChild(reason);
+      const banned=document.createElement('div'); banned.style.marginTop='14px'; const list=(cfg.bannedUsers||[]).map(n=>`<button class="icon-btn danger" data-number="${esc(n)}" title="Remove">${esc(n)} ×</button>`).join(' ') || '<span style="color:var(--text-dim);font-size:11px">No banned users</span>'; banned.innerHTML=`<div class="gauge-label">Banned users</div><div class="banned-list">${list}</div><form style="display:flex;gap:8px;margin-top:8px"><input class="admin-input" placeholder="Number to ban"><button class="btn-amber">Add</button></form>`;
+      banned.querySelectorAll('[data-number]').forEach(btn=>btn.addEventListener('click',()=>saveSetting('bannedUsers',(cfg.bannedUsers||[]).filter(n=>n!==btn.dataset.number))));
+      banned.querySelector('form').addEventListener('submit',e=>{e.preventDefault();const n=e.target.querySelector('input').value.replace(/\D/g,'');if(n)saveSetting('bannedUsers',[...(cfg.bannedUsers||[]),n]);}); settingsBody.appendChild(banned);
+    }catch(err){settingsBody.textContent=err.response?.data?.error || 'Failed to load settings';}
+  }
+  async function saveSetting(key,value){try{await axios.post(sessionApi('/settings'),{key,value},authHeaders());showToast(`${label(key)} saved`);if(key==='bannedUsers')loadSettings();}catch(err){showToast(err.response?.data?.error || 'Setting failed',true);loadSettings();}}
+
+  document.querySelectorAll('.session-tabs button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.session-tabs button').forEach(b=>b.classList.toggle('active',b===btn));['settings','command','chats','channels'].forEach(tab=>document.getElementById(`tab${tab[0].toUpperCase()+tab.slice(1)}`).classList.toggle('hidden',tab!==btn.dataset.tab));if(btn.dataset.tab==='channels')loadChannels();if(btn.dataset.tab==='chats')refreshChatBar();}));
+  document.getElementById('commandForm').addEventListener('submit',async e=>{e.preventDefault();const command=document.getElementById('commandInput').value.trim();if(!command)return;commandLog.textContent+=`\n> ${command}`;try{const r=await axios.post(sessionApi('/command'),{chatId:commandChat.value,command},authHeaders());commandLog.textContent+=`\n${r.data.reply}`;document.getElementById('commandInput').value='';}catch(err){commandLog.textContent+=`\nERROR: ${err.response?.data?.error || 'Command failed'}`;}commandLog.scrollTop=commandLog.scrollHeight;});
+
+  function chatLabel(chatId, chatType, name){
+    const digits = String(chatId).split('@')[0];
+    if(name) return name; if(String(chatId||'').endsWith('@lid')) return 'Contact'; if(chatType === 'group') return `Group · ${digits.slice(0,18)}`; if(chatType === 'channel') return `Channel · ${digits.slice(0,18)}`; return digits ? `+${digits}` : 'Contact';
+  }
+  function avatarHtml(chatId, chatType, size){
+    const icon = chatType === 'group' ? 'fa-users' : chatType === 'channel' ? 'fa-bullhorn' : 'fa-user';
+    return `<div class="chat-avatar" style="${size?`width:${size}px;height:${size}px;font-size:${Math.round(size*0.4)}px;`:''}"><i class="fas ${icon}"></i></div>`;
+  }
+  function timeLabel(ts){
+    const d=new Date(ts), now=new Date();
+    return d.toDateString()===now.toDateString() ? d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : d.toLocaleDateString();
+  }
+  function dateLabel(ts){
+    const d=new Date(ts), now=new Date(), yesterday=new Date(now); yesterday.setDate(now.getDate()-1);
+    if(d.toDateString()===now.toDateString())return 'Today';
+    if(d.toDateString()===yesterday.toDateString())return 'Yesterday';
+    return d.toLocaleDateString(undefined,{day:'numeric',month:'long',year:d.getFullYear()===now.getFullYear()?undefined:'numeric'});
+  }
+  function receiptIcon(message){
+    const status=String(message.status||message.receiptStatus||'').toLowerCase();
+    if(!status)return '';
+    const read=/read|played/.test(status), delivered=/deliver/.test(status);
+    return ` <i class="fas fa-${delivered||read?'check-double':'check'}" style="color:${read?'#53bdeb':'#aebac1'}"></i>`;
+  }
+  let activeChatFilter='all';
+  function renderFilteredChats(){
+    const q=document.getElementById('chatSearch').value.trim().toLowerCase();
+    renderChatList(knownChats.filter(c=>(activeChatFilter==='all'||(c.chatType||'dm')===activeChatFilter)&&(!q||chatLabel(c.chatId,c.chatType,c.name).toLowerCase().includes(q)||(c.preview||'').toLowerCase().includes(q))));
+  }
+  document.getElementById('chatFilters').addEventListener('click',e=>{
+    const button=e.target.closest('[data-chat-filter]'); if(!button)return;
+    activeChatFilter=button.dataset.chatFilter;
+    document.querySelectorAll('#chatFilters .chat-filter').forEach(b=>b.classList.toggle('active',b===button));
+    renderFilteredChats();
+  });
+  const WA_COLORS=['#53bdeb','#06cf9c','#e7a33e','#ff7eb6','#b38cff','#7de3a6','#f27c5b','#6ec1e4'];
+  function senderColor(id){let h=0;String(id||'').split('').forEach(c=>{h=(h*31+c.charCodeAt(0))>>>0});return WA_COLORS[h%WA_COLORS.length];}
+  document.addEventListener('click',e=>{if(e.target.closest('.wa-back'))document.querySelector('.chat-grid').classList.remove('chat-open');});
+  function renderChatList(chats){
+    chatList.innerHTML='';
+    chats.forEach(chat=>{
+      const el=document.createElement('div');
+      el.className='chat-item';
+      const unread=Number(chat.unreadCount ?? chat.unreadMessages ?? 0);
+      el.innerHTML=`${avatarHtml(chat.chatId, chat.chatType)}<div class="chat-meta"><div class="chat-name">${esc(chatLabel(chat.chatId, chat.chatType, chat.name))}<time>${chat.timestamp?timeLabel(chat.timestamp):''}</time></div><div class="chat-preview">${esc(chat.preview||'')}</div></div>${unread>0?`<div class="chat-side"><span class="unread-badge">${unread>99?'99+':unread}</span></div>`:''}`;
+      el.addEventListener('click',()=>{Array.from(chatList.children).forEach(c=>c.classList.remove('selected'));el.classList.add('selected');document.querySelector('.chat-grid').classList.add('chat-open');loadMessages(chat);});
+      chatList.appendChild(el);
+    });
+  }
+  document.getElementById('chatSearch').addEventListener('input',(e)=>{
+    renderFilteredChats();
+  });
+  async function loadChats(){
+    chatList.innerHTML='<div class="rack-empty">Loading chat history…</div>';
+    refreshChatBar();
+    try{
+      const cr=(await axios.get(sessionApi('/chats'),authHeaders())).data;
+      if(cr.chatDisabled){
+        knownChats=[]; commandChat.innerHTML='';
+        chatList.innerHTML='<div class="chat-off"><i class="fas fa-database"></i><strong>'+(cr.chatDb&&cr.chatDb.state==='off'?'No chat database':'Chats are paused')+'</strong>'+(cr.chatDb&&cr.chatDb.state==='off'?'Add a chat database to save and view chats. Your bot is running normally.':'The chat database is full or offline. Your bot is running normally. Chats will show again when it recovers.')+'<br><button class="btn-amber" id="chatOffManage">'+(cr.chatDb&&cr.chatDb.state==='off'?'Add chat database':'Manage chat database')+'</button></div>';
+        document.getElementById('chatOffManage').addEventListener('click',()=>openChatDb(selectedServer));
+        messageThread.innerHTML='<div class="rack-empty">Chat history unavailable</div>'; return;
+      }
+      knownChats=cr.chats||[];
+      renderFilteredChats();
+      commandChat.innerHTML='';
+      knownChats.forEach(chat=>{const option=document.createElement('option');option.value=chat.chatId;option.textContent=chatLabel(chat.chatId, chat.chatType, chat.name);commandChat.appendChild(option);});
+      if(!knownChats.length)chatList.innerHTML='<div class="rack-empty">No recorded messages yet</div>';
+    }catch(err){chatList.innerHTML='<div class="rack-empty">Could not load history</div>';}
+  }
+  async function loadMessages(chat,before){
+    if(!before){
+      selectedChat=chat;
+      threadHead.style.display='flex';
+      const subtitle=chat.chatType === 'group' ? 'Group chat' : chat.chatType === 'channel' ? 'Channel' : 'Direct message';
+      threadHead.innerHTML=`<button type="button" class="compose-icon wa-back" aria-label="Back"><i class="fas fa-arrow-left"></i></button>${avatarHtml(chat.chatId, chat.chatType, 40)}<div class="thread-contact"><strong>${esc(chatLabel(chat.chatId, chat.chatType, chat.name))}</strong><span class="thread-subtitle">${subtitle}</span></div><div class="thread-actions"><button type="button" class="compose-icon" title="Search in conversation" aria-label="Search in conversation"><i class="fas fa-search"></i></button><button type="button" class="compose-icon" title="Menu" aria-label="Menu"><i class="fas fa-ellipsis-vertical"></i></button></div>`;
+      messageThread.innerHTML='<div class="rack-empty">Loading messages…</div>';
+    }
+    try{
+      const r=await axios.get(sessionApi(`/chats/${encodeURIComponent(chat.chatId)}/messages`),{...authHeaders(),params:{limit:50,...(before?{before}:{})}});
+      const messages=r.data.messages||[];
+      if(!before)messageThread.innerHTML='';
+      if(messages.length===50){
+        const more=document.createElement('button');
+        more.className='btn-ghost';
+        more.textContent='Load older messages';
+        more.addEventListener('click',()=>loadMessages(chat,messages[messages.length-1].timestamp));
+        messageThread.appendChild(more);
+      }
+      const ordered=messages.slice().reverse();
+      ordered.forEach((m,index)=>{
+        const previous=ordered[index-1], next=ordered[index+1];
+        const day=new Date(m.timestamp).toDateString();
+        if(!previous || new Date(previous.timestamp).toDateString()!==day){
+          const separator=document.createElement('div'); separator.className='date-separator'; separator.textContent=dateLabel(m.timestamp); messageThread.appendChild(separator);
+        }
+        const el=document.createElement('div');
+        const samePrevious=previous && previous.fromMe===m.fromMe && (new Date(m.timestamp)-new Date(previous.timestamp))<300000 && new Date(previous.timestamp).toDateString()===day;
+        const sameNext=next && next.fromMe===m.fromMe && (new Date(next.timestamp)-new Date(m.timestamp))<300000 && new Date(next.timestamp).toDateString()===day;
+        el.className=`message ${m.fromMe?'me':'them'} ${samePrevious?'':'run-start'} ${sameNext?'':'run-end'}`;
+        const senderLabel = (chat.chatType === 'group' && !m.fromMe) ? `<span class="sender-label" style="color:${senderColor(m.sender)}">+${esc(String(m.sender||'').split('@')[0])}</span>` : '';
+        const tick = m.fromMe ? receiptIcon(m) : '';
+        const mediaHtml = m.media?.type === 'image' ? `<img class="message-media" src="data:${esc(m.media.mimetype)};base64,${m.media.data}" alt="Image message">` : m.media?.type === 'audio' ? `<audio class="message-audio" controls src="data:${esc(m.media.mimetype)};base64,${m.media.data}"></audio>` : '';
+        const actions = fullControl && m.key ? `<div class="bubble-actions"><button data-react="👍">👍</button><button data-react="❤️">❤️</button><button data-reply="1">Reply</button>${m.fromMe?'<button data-delete="1">Delete</button>':''}</div>` : '';
+        el.innerHTML=`${senderLabel}${mediaHtml}${esc(m.text || m.caption || `[${m.messageType}]`)}${actions}<time>${timeLabel(m.timestamp)}${tick}</time>`;
+        el.querySelectorAll('[data-react]').forEach(btn=>btn.addEventListener('click',()=>reactTo(m,btn.dataset.react)));
+        el.querySelector('[data-reply]')?.addEventListener('click',()=>{replyKey=m.key;document.getElementById('composeText').placeholder='Replying to selected message';document.getElementById('composeText').focus();});
+        el.querySelector('[data-delete]')?.addEventListener('click',()=>deleteOwn(m));
+        messageThread.appendChild(el);
+      });
+      messageThread.scrollTop=messageThread.scrollHeight;
+    }catch(err){messageThread.textContent='Could not load messages';}
+  }
+
+  // ===== Full Control Mode (intentionally local to this panel session) =====
+  let fullControl=false, threadPoll=null, replyKey=null;
+  const controlPill=document.getElementById('fullControlPill'), compose=document.getElementById('threadCompose');
+  const composeText=document.getElementById('composeText'), composeSubmit=document.getElementById('composeSubmit');
+  function updateComposeAction(){const sending=composeText.value.trim().length>0;composeSubmit.innerHTML=`<i class="fas fa-${sending?'paper-plane':'microphone'}"></i><span>${sending?'Send':'Voice message'}</span>`;composeSubmit.title=sending?'Send message':'Voice message';composeSubmit.setAttribute('aria-label',composeSubmit.title);}
+  composeText.addEventListener('input',updateComposeAction); updateComposeAction();
+  function setFullControl(on){fullControl=on;controlPill.textContent=on?'ON':'OFF';controlPill.classList.toggle('on',on);compose.classList.toggle('hidden',!on);if(on&&selectedChat)markRead();}
+  document.getElementById('fullControlToggle').addEventListener('click',()=>setFullControl(!fullControl));
+  document.getElementById('attachBtn').addEventListener('click',()=>document.getElementById('mediaInput').click());
+  document.getElementById('threadCompose').addEventListener('submit',async e=>{e.preventDefault();if(!fullControl||!selectedChat)return;const text=composeText.value.trim(), file=document.getElementById('mediaInput').files[0];if(!text&&!file)return;let mediaBase64,mimetype,filename,ptt=false;if(file){mediaBase64=await new Promise((ok,bad)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(',')[1]);r.onerror=bad;r.readAsDataURL(file);});mimetype=file.type;filename=file.name;ptt=file.type.startsWith('audio/');}try{await axios.post(sessionApi(`/chats/${encodeURIComponent(selectedChat.chatId)}/send`),{text,mediaBase64,mimetype,filename,ptt,quoted:replyKey?{key:replyKey}:null},authHeaders());composeText.value='';updateComposeAction();document.getElementById('mediaInput').value='';replyKey=null;await loadMessages(selectedChat);}catch(err){showToast(err.response?.data?.error||'Send failed',true);}});
+  async function markRead(){if(!fullControl||!selectedChat)return;try{const r=await axios.get(sessionApi(`/chats/${encodeURIComponent(selectedChat.chatId)}/messages`),{...authHeaders(),params:{limit:1}});const key=r.data.messages?.[0]?.key;if(key)await axios.post(sessionApi(`/chats/${encodeURIComponent(selectedChat.chatId)}/read`),{key},authHeaders());}catch(_e){}}
+  async function reactTo(message,emoji){try{await axios.post(sessionApi(`/chats/${encodeURIComponent(selectedChat.chatId)}/react`),{emoji,key:message.key},authHeaders());showToast('Reaction sent');}catch(err){showToast(err.response?.data?.error||'Reaction failed',true);}}
+  async function deleteOwn(message){if(!confirm('Delete this message for everyone?'))return;try{await axios.delete(sessionApi(`/chats/${encodeURIComponent(selectedChat.chatId)}/messages/${encodeURIComponent(message.key?.id||'message')}`),{...authHeaders(),data:{key:message.key}});await loadMessages(selectedChat);}catch(err){showToast(err.response?.data?.error||'Delete failed',true);}}
+  const originalLoadMessages=loadMessages;
+  loadMessages=async function(chat,before){await originalLoadMessages(chat,before);if(!before&&fullControl){markRead();if(threadPoll)clearInterval(threadPoll);threadPoll=setInterval(()=>{if(selectedChat===chat)originalLoadMessages(chat).catch(()=>{});},4000);}};
+  const originalAppendMessage=(m,chat)=>{};
+
+  // ===== Known Channel management =====
+  const channelList=document.getElementById('channelList');
+  async function loadChannels(){if(!selectedSession)return;channelList.innerHTML='<div class="rack-empty">Loading known channels…</div>';try{const data=(await axios.get(sessionApi('/channels'),authHeaders())).data;const channels=data.channels||[];channelList.innerHTML='';if(!channels.length){channelList.innerHTML='<div class="rack-empty">No known channels. Add one by link or JID.</div>';return;}channels.forEach(c=>{const meta=c.metadata||{},name=meta.name||meta.subject||c.jid,subs=c.subscribers?.length??c.subscribers??'—',admins=c.admins||[];const card=document.createElement('div');card.className='channel-card';card.innerHTML=`<h4>${esc(name)}</h4><div>${esc(c.jid)}</div><div style="color:var(--text-dim);margin:7px 0">Subscribers: ${esc(subs)} · Admins: ${esc(c.adminCount??admins.length)}</div><button class="btn-ghost" data-action="edit">Edit / mute</button><button class="btn-ghost" data-action="admins">Admins</button><button class="btn-ghost danger" data-action="remove">Forget</button><button class="btn-ghost danger" data-action="delete">Delete channel</button>`;card.querySelector('[data-action="remove"]').addEventListener('click',async()=>{if(confirm('Remove only from this panel’s known list? The real channel is unchanged.')){await axios.delete(sessionApi(`/channels/${encodeURIComponent(c.jid)}`),authHeaders());loadChannels();}});card.querySelector('[data-action="delete"]').addEventListener('click',async()=>{if(confirm('Delete the REAL WhatsApp channel? This cannot be undone.')){await axios.delete(sessionApi(`/channels/${encodeURIComponent(c.jid)}/delete`),authHeaders());loadChannels();}});card.querySelector('[data-action="edit"]').addEventListener('click',async()=>{const name=prompt('Channel name (leave blank to keep):','');const description=prompt('Description (leave blank to keep):','');const muted=confirm('Press OK to mute this channel; Cancel to unmute.');try{await axios.post(sessionApi(`/channels/${encodeURIComponent(c.jid)}/update`),{...(name?{name}:{}),...(description?{description}:{}),mute:muted},authHeaders());loadChannels();}catch(err){showToast(err.response?.data?.error||'Update failed',true);}});card.querySelector('[data-action="admins"]').addEventListener('click',async()=>{if(!admins.length){showToast('No admin details returned by WhatsApp for this channel',true);return;}const target=prompt(`Existing admins:\n${admins.map(a=>a.jid).join('\n')}\n\nEnter an admin JID to transfer ownership, or leave blank to cancel:`,'');if(!target)return;if(!admins.some(a=>a.jid===target)){showToast('That JID is not an existing admin',true);return;}if(!confirm('Send an ownership-transfer request? It remains pending until the admin accepts in WhatsApp.'))return;try{const out=await axios.post(sessionApi(`/channels/${encodeURIComponent(c.jid)}/transfer-owner`),{jid:target},authHeaders());showToast(out.data.message||'Transfer request sent');}catch(err){showToast(err.response?.data?.error||'Transfer failed',true);}});channelList.appendChild(card);});}catch(err){channelList.innerHTML=`<div class="rack-empty">${esc(err.response?.data?.error||'Could not load channels')}</div>`;}}
+  document.getElementById('channelAddForm').addEventListener('submit',async e=>{e.preventDefault();const channel=document.getElementById('channelInput').value.trim();if(!channel)return;try{await axios.post(sessionApi('/channels'),{channel},authHeaders());document.getElementById('channelInput').value='';loadChannels();showToast('Channel added to this session');}catch(err){showToast(err.response?.data?.error||'Could not a

@@ -8,6 +8,17 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+/* Vercel proxy fix: some proxies drop the x-api-key header, so also send the key as ?key= (the bot accepts both). */
+axios.interceptors.request.use(function(cfg){
+  try{
+    var h=cfg.headers||{};
+    var k=(h.get?h.get('x-api-key'):h['x-api-key']);
+    if(k){ cfg.params=Object.assign({},cfg.params||{},{key:k}); }
+  }catch(e){}
+  return cfg;
+});
+</script>
 <style>
   :root{
     --bg:#0a0c0f;
@@ -1222,4 +1233,4 @@ header{position:sticky;top:0;z-index:20;background:rgba(13,16,20,.92);backdrop-f
   // ===== Known Channel management =====
   const channelList=document.getElementById('channelList');
   async function loadChannels(){if(!selectedSession)return;channelList.innerHTML='<div class="rack-empty">Loading known channels…</div>';try{const data=(await axios.get(sessionApi('/channels'),authHeaders())).data;const channels=data.channels||[];channelList.innerHTML='';if(!channels.length){channelList.innerHTML='<div class="rack-empty">No known channels. Add one by link or JID.</div>';return;}channels.forEach(c=>{const meta=c.metadata||{},name=meta.name||meta.subject||c.jid,subs=c.subscribers?.length??c.subscribers??'—',admins=c.admins||[];const card=document.createElement('div');card.className='channel-card';card.innerHTML=`<h4>${esc(name)}</h4><div>${esc(c.jid)}</div><div style="color:var(--text-dim);margin:7px 0">Subscribers: ${esc(subs)} · Admins: ${esc(c.adminCount??admins.length)}</div><button class="btn-ghost" data-action="edit">Edit / mute</button><button class="btn-ghost" data-action="admins">Admins</button><button class="btn-ghost danger" data-action="remove">Forget</button><button class="btn-ghost danger" data-action="delete">Delete channel</button>`;card.querySelector('[data-action="remove"]').addEventListener('click',async()=>{if(confirm('Remove only from this panel’s known list? The real channel is unchanged.')){await axios.delete(sessionApi(`/channels/${encodeURIComponent(c.jid)}`),authHeaders());loadChannels();}});card.querySelector('[data-action="delete"]').addEventListener('click',async()=>{if(confirm('Delete the REAL WhatsApp channel? This cannot be undone.')){await axios.delete(sessionApi(`/channels/${encodeURIComponent(c.jid)}/delete`),authHeaders());loadChannels();}});card.querySelector('[data-action="edit"]').addEventListener('click',async()=>{const name=prompt('Channel name (leave blank to keep):','');const description=prompt('Description (leave blank to keep):','');const muted=confirm('Press OK to mute this channel; Cancel to unmute.');try{await axios.post(sessionApi(`/channels/${encodeURIComponent(c.jid)}/update`),{...(name?{name}:{}),...(description?{description}:{}),mute:muted},authHeaders());loadChannels();}catch(err){showToast(err.response?.data?.error||'Update failed',true);}});card.querySelector('[data-action="admins"]').addEventListener('click',async()=>{if(!admins.length){showToast('No admin details returned by WhatsApp for this channel',true);return;}const target=prompt(`Existing admins:\n${admins.map(a=>a.jid).join('\n')}\n\nEnter an admin JID to transfer ownership, or leave blank to cancel:`,'');if(!target)return;if(!admins.some(a=>a.jid===target)){showToast('That JID is not an existing admin',true);return;}if(!confirm('Send an ownership-transfer request? It remains pending until the admin accepts in WhatsApp.'))return;try{const out=await axios.post(sessionApi(`/channels/${encodeURIComponent(c.jid)}/transfer-owner`),{jid:target},authHeaders());showToast(out.data.message||'Transfer request sent');}catch(err){showToast(err.response?.data?.error||'Transfer failed',true);}});channelList.appendChild(card);});}catch(err){channelList.innerHTML=`<div class="rack-empty">${esc(err.response?.data?.error||'Could not load channels')}</div>`;}}
-  document.getElementById('channelAddForm').addEventListener('submit',async e=>{e.preventDefault();const channel=document.getElementById('channelInput').value.trim();if(!channel)return;try{await axios.post(sessionApi('/channels'),{channel},authHeaders());document.getElementById('channelInput').value='';loadChannels();showToast('Channel added to this session');}catch(err){showToast(err.response?.data?.error||'Could not a
+  document.getElementById('channelAddForm').addEventLis

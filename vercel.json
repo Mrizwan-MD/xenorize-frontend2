@@ -1,41 +1,7 @@
 {
-  "version": 2,
   "rewrites": [
-    {
-      "source": "/admin",
-      "destination": "/admin.html"
-    },
-    {
-      "source": "/admin/",
-      "destination": "/admin.html"
-    },
-    {
-      "source": "/code",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/code/",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/pair",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/api/get",
-      "destination": "http://51.83.6.5:20139/api/get"
-    },
-    {
-      "source": "/api/ref-info",
-      "destination": "http://51.83.6.5:20139/api/ref-info"
-    },
-    {
-      "source": "/api/admin/:path*",
-      "destination": "http://51.83.6.5:20139/api/admin/:path*"
-    },
-    {
-      "source": "/ping",
-      "destination": "http://51.83.6.5:20139/ping"
-    }
+    { "source": "/api/:path*", "destination": "http://123.45.67.89:20139/api/:path*" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/", "destination": "/index.html" }
   ]
 }

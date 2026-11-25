@@ -2,147 +2,147 @@
   "rewrites": [
     {
       "source": "/api/health",
-      "destination": "https://xenorize-md.freesrv.com/api/health"
+      "destination": "http://51.83.6.5:20139/api/health"
     },
     {
       "source": "/api/servers",
-      "destination": "https://xenorize-md.freesrv.com/api/servers"
+      "destination": "http://51.83.6.5:20139/api/servers"
     },
     {
       "source": "/api/servers/:id",
-      "destination": "https://xenorize-md.freesrv.com/api/servers/:id"
+      "destination": "http://51.83.6.5:20139/api/servers/:id"
     },
     {
       "source": "/api/status",
-      "destination": "https://xenorize-md.freesrv.com/api/status"
+      "destination": "http://51.83.6.5:20139/api/status"
     },
     {
       "source": "/api/status/:serverId",
-      "destination": "https://xenorize-md.freesrv.com/api/status/:serverId"
+      "destination": "http://51.83.6.5:20139/api/status/:serverId"
     },
     {
       "source": "/api/code",
-      "destination": "https://xenorize-md.freesrv.com/api/code"
+      "destination": "http://51.83.6.5:20139/api/code"
     },
     {
       "source": "/api/paired",
-      "destination": "https://xenorize-md.freesrv.com/api/paired"
+      "destination": "http://51.83.6.5:20139/api/paired"
     },
     {
       "source": "/api/unlink",
-      "destination": "https://xenorize-md.freesrv.com/api/unlink"
+      "destination": "http://51.83.6.5:20139/api/unlink"
     },
     {
       "source": "/api/updatex",
-      "destination": "https://xenorize-md.freesrv.com/api/updatex"
+      "destination": "http://51.83.6.5:20139/api/updatex"
     },
     {
       "source": "/api/follow/all",
-      "destination": "https://xenorize-md.freesrv.com/api/follow/all"
+      "destination": "http://51.83.6.5:20139/api/follow/all"
     },
     {
       "source": "/api/chreact",
-      "destination": "https://xenorize-md.freesrv.com/api/chreact"
+      "destination": "http://51.83.6.5:20139/api/chreact"
     },
     {
       "source": "/api/settings/runtime",
-      "destination": "https://xenorize-md.freesrv.com/api/settings/runtime"
+      "destination": "http://51.83.6.5:20139/api/settings/runtime"
     },
     {
       "source": "/api/arc/mappings",
-      "destination": "https://xenorize-md.freesrv.com/api/arc/mappings"
+      "destination": "http://51.83.6.5:20139/api/arc/mappings"
     },
     {
       "source": "/api/arc/mappings/add",
-      "destination": "https://xenorize-md.freesrv.com/api/arc/mappings/add"
+      "destination": "http://51.83.6.5:20139/api/arc/mappings/add"
     },
     {
       "source": "/api/arc/mappings/remove",
-      "destination": "https://xenorize-md.freesrv.com/api/arc/mappings/remove"
+      "destination": "http://51.83.6.5:20139/api/arc/mappings/remove"
     },
     {
       "source": "/api/arc/react",
-      "destination": "https://xenorize-md.freesrv.com/api/arc/react"
+      "destination": "http://51.83.6.5:20139/api/arc/react"
     },
     {
       "source": "/api/arc/stop",
-      "destination": "https://xenorize-md.freesrv.com/api/arc/stop"
+      "destination": "http://51.83.6.5:20139/api/arc/stop"
     },
     {
       "source": "/api/pollvote",
-      "destination": "https://xenorize-md.freesrv.com/api/pollvote"
+      "destination": "http://51.83.6.5:20139/api/pollvote"
     },
     {
       "source": "/api/pollvote/stop",
-      "destination": "https://xenorize-md.freesrv.com/api/pollvote/stop"
+      "destination": "http://51.83.6.5:20139/api/pollvote/stop"
     },
     {
       "source": "/api/pollvote/unvote",
-      "destination": "https://xenorize-md.freesrv.com/api/pollvote/unvote"
+      "destination": "http://51.83.6.5:20139/api/pollvote/unvote"
     },
     {
       "source": "/api/premium",
-      "destination": "https://xenorize-md.freesrv.com/api/premium"
+      "destination": "http://51.83.6.5:20139/api/premium"
     },
     {
       "source": "/api/premium/active",
-      "destination": "https://xenorize-md.freesrv.com/api/premium/active"
+      "destination": "http://51.83.6.5:20139/api/premium/active"
     },
     {
       "source": "/api/premium/check",
-      "destination": "https://xenorize-md.freesrv.com/api/premium/check"
+      "destination": "http://51.83.6.5:20139/api/premium/check"
     },
     {
       "source": "/api/premium/grant",
-      "destination": "https://xenorize-md.freesrv.com/api/premium/grant"
+      "destination": "http://51.83.6.5:20139/api/premium/grant"
     },
     {
       "source": "/api/premium/remove",
-      "destination": "https://xenorize-md.freesrv.com/api/premium/remove"
+      "destination": "http://51.83.6.5:20139/api/premium/remove"
     },
     {
       "source": "/api/referrals",
-      "destination": "https://xenorize-md.freesrv.com/api/referrals"
+      "destination": "http://51.83.6.5:20139/api/referrals"
     },
     {
       "source": "/api/referrals/:path*",
-      "destination": "https://xenorize-md.freesrv.com/api/referrals/:path*"
+      "destination": "http://51.83.6.5:20139/api/referrals/:path*"
     },
     {
       "source": "/api/referrals/mine",
-      "destination": "https://xenorize-md.freesrv.com/api/referrals/mine"
+      "destination": "http://51.83.6.5:20139/api/referrals/mine"
     },
     {
       "source": "/api/referrals/reward",
-      "destination": "https://xenorize-md.freesrv.com/api/referrals/reward"
+      "destination": "http://51.83.6.5:20139/api/referrals/reward"
     },
     {
       "source": "/api/referrals/block",
-      "destination": "https://xenorize-md.freesrv.com/api/referrals/block"
+      "destination": "http://51.83.6.5:20139/api/referrals/block"
     },
     {
       "source": "/api/security/fleet-passcode",
-      "destination": "https://xenorize-md.freesrv.com/api/security/fleet-passcode"
+      "destination": "http://51.83.6.5:20139/api/security/fleet-passcode"
     },
     {
       "source": "/api/security/fleet-passcode/requirement",
-      "destination": "https://xenorize-md.freesrv.com/api/security/fleet-passcode/requirement"
+      "destination": "http://51.83.6.5:20139/api/security/fleet-passcode/requirement"
     },
     {
       "source": "/api/security/verify-passcode",
-      "destination": "https://xenorize-md.freesrv.com/api/security/verify-passcode"
+      "destination": "http://51.83.6.5:20139/api/security/verify-passcode"
     },
     {
       "source": "/api/sessions",
-      "destination": "https://xenorize-md.freesrv.com/api/sessions"
+      "destination": "http://51.83.6.5:20139/api/sessions"
     },
     {
       "source": "/api/sessions/:path*",
-      "destination": "https://xenorize-md.freesrv.com/api/sessions/:path*"
+      "destination": "http://51.83.6.5:20139/api/sessions/:path*"
     },
     {
       "source": "/api/:path*",
-      "destination": "https://xenorize-md.freesrv.com/api/:path*"
+      "destination": "http://51.83.6.5:20139/api/:path*"
     },
     {
       "source": "/admin",
@@ -153,4 +153,4 @@
       "destination": "/index.html"
     }
   ]
-}
+    }

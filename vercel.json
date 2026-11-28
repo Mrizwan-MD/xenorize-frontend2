@@ -1,0 +1,4 @@
+{
+  "rewrites": [ { "source": "/admin", "destination": "/admin.html" }, { "source": "/server", "destination": "/server.html" } ],
+  "functions": { "api/[...path].js": { "maxDuration": 60 } }
+}
